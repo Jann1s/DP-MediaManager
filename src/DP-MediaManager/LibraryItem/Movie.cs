@@ -6,7 +6,18 @@ using System.Threading.Tasks;
 
 namespace DP_MediaManager.LibraryItem
 {
-    class Movie
+    class Movie : IMovie
     {
+        private Entry entry;
+
+        public Movie(Entry entry)
+        {
+            this.entry = entry;
+        }
+
+        public Entry GetMovie()
+        {
+            return entry;
+        }
     }
 }
