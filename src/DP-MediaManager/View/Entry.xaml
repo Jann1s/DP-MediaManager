@@ -9,6 +9,6 @@
       Title="Entry">
 
     <Grid>
-        <TextBlock Text="TEST" FontSize="72" />
+        <Label x:Name="lbl_Title" Content="" FontSize="72" />
     </Grid>
 </Page>

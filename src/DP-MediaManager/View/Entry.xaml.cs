@@ -20,9 +20,15 @@ namespace DP_MediaManager.View
     /// </summary>
     public partial class Entry : Page
     {
+        private LibraryItem.IMovie entry;
+
         public Entry()
         {
             InitializeComponent();
+
+            entry = MediaManager.Instance.GetLibrary()[MediaManager.Instance.SelectedEntry];
+
+            lbl_Title.Content = entry.GetMovie().Name;
         }
     }
 }
