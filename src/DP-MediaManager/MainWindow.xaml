@@ -23,5 +23,6 @@
         <Button x:Name="btn_addEntry"       Content="Add Entry"         Foreground="#FFF1F1F1" Background="#FF5D5D5D" BorderThickness="0px" Grid.Column="0" Grid.Row="1" Click="Btn_addEntry_Click" />
         <Button x:Name="btn_settings"       Content="Settings"          Foreground="#FFF1F1F1" Background="#FF5D5D5D" BorderThickness="0px" Grid.Column="0" Grid.Row="4" />
         <Frame x:Name="frameMain" Content="Itsame" Grid.Column="1" Grid.Row="0" Grid.RowSpan="4" Source="/DP-MediaManager;component/View/Collection.xaml" NavigationUIVisibility="Hidden" />
+        <!--Navigating="frame_Navigating"-->
     </Grid>
 </Window>

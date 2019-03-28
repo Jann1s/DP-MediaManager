@@ -10,6 +10,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace DP_MediaManager.View
@@ -17,9 +18,9 @@ namespace DP_MediaManager.View
     /// <summary>
     /// Interaction logic for Seasons.xaml
     /// </summary>
-    public partial class Seasons : Window
+    public partial class Season : Page
     {
-        public Seasons()
+        public Season()
         {
             InitializeComponent();
         }

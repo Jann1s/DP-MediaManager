@@ -9,6 +9,5 @@ namespace DP_MediaManager.LibraryItem
     interface ISeries
     {
         Season GetSeason(int index);
-        Entry GetEpisode(int index = -1, string name = "");
     }
 }
