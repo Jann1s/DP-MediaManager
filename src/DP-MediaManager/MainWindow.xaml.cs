@@ -20,9 +20,12 @@ namespace DP_MediaManager
     /// </summary>
     public partial class MainWindow : Window
     {
+        private MediaManager manager;
+
         public MainWindow()
         {
             InitializeComponent();
+            manager = new MediaManager();
         }
 
         private void Btn_addEntry_Click(object sender, RoutedEventArgs e)
