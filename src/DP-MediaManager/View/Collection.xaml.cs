@@ -22,6 +22,7 @@ namespace DP_MediaManager
     {
         public Collection()
         {
+            InitializeComponent();
         }
     }
 }
