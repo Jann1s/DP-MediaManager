@@ -6,7 +6,16 @@ using System.Threading.Tasks;
 
 namespace DP_MediaManager.MediaAPI
 {
-    class SeriesInformation
+    class SeriesInformation : IEntryInformation
     {
+        public void GetEntryData()
+        {
+            
+        }
+
+        public void GetGeneralInformation()
+        {
+
+        }
     }
 }

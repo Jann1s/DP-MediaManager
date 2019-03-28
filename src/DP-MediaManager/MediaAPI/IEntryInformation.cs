@@ -8,5 +8,6 @@ namespace DP_MediaManager.MediaAPI
 {
     interface IEntryInformation
     {
+        void GetEntryData();
     }
 }

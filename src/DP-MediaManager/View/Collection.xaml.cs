@@ -20,9 +20,20 @@ namespace DP_MediaManager
     /// </summary>
     public partial class Collection : Window
     {
+        private MediaAPI.EntryInformation entry;
         public Collection()
         {
             InitializeComponent();
+            entry = new MediaAPI.EntryInformation(47964);
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Console.WriteLine(entry.GetName());
+            Console.WriteLine(entry.GetGenre());
+            Console.WriteLine(entry.GetPoster());
+            Console.WriteLine(entry.GetRating());
+            Console.WriteLine(entry.GetReleaseDate());
         }
     }
 }
