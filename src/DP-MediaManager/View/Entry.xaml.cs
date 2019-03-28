@@ -10,6 +10,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace DP_MediaManager.View
@@ -17,7 +18,7 @@ namespace DP_MediaManager.View
     /// <summary>
     /// Interaction logic for Entry.xaml
     /// </summary>
-    public partial class Entry : Window
+    public partial class Entry : Page
     {
         public Entry()
         {

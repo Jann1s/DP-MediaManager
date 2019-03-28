@@ -13,23 +13,27 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace DP_MediaManager.View
+namespace DP_MediaManager
 {
     /// <summary>
-    /// Interaction logic for Collection.xaml
+    /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class Collection : Page
+    public partial class MainWindow : Window
     {
-        public Collection()
+        public MainWindow()
         {
             InitializeComponent();
         }
 
-        private void TextBlock_MouseDown(object sender, MouseButtonEventArgs e)
+        private void Btn_addEntry_Click(object sender, RoutedEventArgs e)
         {
-            //Check if its a series or movie HERE...
-            Entry entry = new Entry();
-            NavigationService.Navigate(entry);
+            Window window = new View.ManageEntry();
+            window.Show();
+        }
+
+        private void Btn_showCollection_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
