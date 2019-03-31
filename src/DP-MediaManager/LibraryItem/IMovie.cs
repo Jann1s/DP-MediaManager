@@ -8,5 +8,6 @@ namespace DP_MediaManager.LibraryItem
 {
     interface IMovie
     {
+        Entry GetMovie();
     }
 }
