@@ -17,5 +17,13 @@ namespace DP_MediaManager.MediaAPI
         {
 
         }
+        public void GetSeasonList()
+        {
+
+        }
+        public void GetEpisodeInformation(string episodeId)
+        {
+
+        }
     }
 }
