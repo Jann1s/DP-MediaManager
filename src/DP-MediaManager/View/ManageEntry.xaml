@@ -7,6 +7,12 @@
         mc:Ignorable="d"
         Title="ManageEntry" Height="450" Width="800">
     <Grid>
-        
+        <Button x:Name="btn_apply" Content="Apply" HorizontalAlignment="Left" Margin="537,280,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="btn_delete" Content="Delete" HorizontalAlignment="Left" Margin="93,280,0,0" VerticalAlignment="Top" Width="75"/>
+        <TextBox x:Name="textBox_iD" HorizontalAlignment="Left" Height="23" Margin="107,64,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="textBox_fileLocation" HorizontalAlignment="Left" Height="23" Margin="107,124,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Label Content="TMDB ID" HorizontalAlignment="Left" Margin="19,64,0,0" VerticalAlignment="Top"/>
+        <Label Content="File location" HorizontalAlignment="Left" Margin="28,121,0,0" VerticalAlignment="Top"/>
+
     </Grid>
 </Window>
