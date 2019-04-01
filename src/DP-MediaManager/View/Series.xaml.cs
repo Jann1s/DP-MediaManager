@@ -70,9 +70,7 @@ namespace DP_MediaManager.View
             TextBlock tmpText = (TextBlock)sender;
             int index = (int)tmpText.Tag;
 
-            MediaManager.Instance.SelectedEntry = index;
-
-            Season season = new Season();
+            Season season = new Season(index);
             NavigationService.Navigate(season);
         }
     }

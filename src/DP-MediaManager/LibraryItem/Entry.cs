@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DP_MediaManager.LibraryItem
 {
-    class Entry
+    public class Entry
     {
         public string Name { get; set; }
         public DateTime Release { get; set; }

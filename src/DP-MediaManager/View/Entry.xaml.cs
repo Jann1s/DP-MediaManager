@@ -20,15 +20,22 @@ namespace DP_MediaManager.View
     /// </summary>
     public partial class Entry : Page
     {
-        private LibraryItem.LibraryFactory entry;
+        private LibraryItem.Entry entry;
 
-        public Entry()
+        public Entry(LibraryItem.Entry entry = null)
         {
             InitializeComponent();
 
-            entry = MediaManager.Instance.GetLibrary()[MediaManager.Instance.SelectedEntry];
+            if (entry == null)
+            {
+                this.entry = MediaManager.Instance.GetLibrary()[MediaManager.Instance.SelectedEntry].GetDetails();
+            }
+            else
+            {
+                this.entry = entry;
+            }
 
-            lbl_Title.Content = entry.GetDetails().Name;
+            lbl_Title.Content = this.entry.Name;
         }
     }
 }

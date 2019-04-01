@@ -31,6 +31,11 @@ namespace DP_MediaManager.LibraryItem
             return episodes[index];
         }
 
+        public List<Entry> GetEpisodes()
+        {
+            return episodes;
+        }
+
         public string GetDescription()
         {
             return description;

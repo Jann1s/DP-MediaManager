@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DP_MediaManager.LibraryItem
 {
-    class Cast
+    public class Cast
     {
         public string Firstname { get; set; }
         public string Lastname { get; set; }
