@@ -6,9 +6,13 @@ using System.Threading.Tasks;
 
 namespace DP_MediaManager.LibraryItem
 {
-    class Series : ISeries
+    class Series : LibraryFactory, ISeries
     {
         private List<Season> seasons;
+        
+        public string Description { get; set; }
+        public string Name { get; set; }
+        public string Poster { get; set; }
 
         public Series()
         {
@@ -21,14 +25,35 @@ namespace DP_MediaManager.LibraryItem
 
         }
 
-        public Season GetSeason(int index)
+        public void AddSeason(Season season)
         {
-            return null;
+            seasons.Add(season);
+
         }
 
-        public Entry GetEpisode(int index = -1, string name = "")
+        public Season GetSeason(int index)
         {
-            return null;
+            return seasons[index];
+        }
+
+        public List<Season> GetSeasons()
+        {
+            return seasons;
+        }
+
+        public override Entry GetDetails(int season = -1, int episode = -1)
+        {
+            return seasons[season].GetEpisode(episode);
+        }
+
+        public override List<string> GetCardInfo()
+        {
+            List<string> card = new List<string>();
+            card.Add(Name);
+            card.Add(Description);
+            card.Add(Poster);
+
+            return card;
         }
     }
 }

@@ -83,6 +83,9 @@
     <Compile Include="ViewController\IDPObserver.cs" />
     <Compile Include="ViewController\ManageEntry.cs" />
     <Compile Include="ViewController\Seasons.cs" />
+    <Compile Include="View\Collection.xaml.cs">
+      <DependentUpon>Collection.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Configuration.xaml.cs">
       <DependentUpon>Configuration.xaml</DependentUpon>
     </Compile>
@@ -92,10 +95,13 @@
     <Compile Include="View\ManageEntry.xaml.cs">
       <DependentUpon>ManageEntry.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Seasons.xaml.cs">
-      <DependentUpon>Seasons.xaml</DependentUpon>
+    <Compile Include="View\Season.xaml.cs">
+      <DependentUpon>Season.xaml</DependentUpon>
     </Compile>
-    <Page Include="View\Collection.xaml">
+    <Compile Include="View\Series.xaml.cs">
+      <DependentUpon>Series.xaml</DependentUpon>
+    </Compile>
+    <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -109,18 +115,20 @@
     <Compile Include="Database\SqlDB.cs" />
     <Compile Include="LibraryItem\Cast.cs" />
     <Compile Include="LibraryItem\Entry.cs" />
-    <Compile Include="LibraryItem\ILibraryFactory.cs" />
+    <Compile Include="LibraryItem\LibraryFactory.cs" />
     <Compile Include="LibraryItem\IMovie.cs" />
     <Compile Include="LibraryItem\ISeries.cs" />
     <Compile Include="LibraryItem\Movie.cs" />
-    <Compile Include="LibraryItem\MovieFactory.cs" />
     <Compile Include="LibraryItem\Season.cs" />
     <Compile Include="LibraryItem\Series.cs" />
-    <Compile Include="LibraryItem\SeriesFactory.cs" />
-    <Compile Include="View\Collection.xaml.cs">
-      <DependentUpon>Collection.xaml</DependentUpon>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\Collection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Configuration.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -133,7 +141,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Seasons.xaml">
+    <Page Include="View\Season.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Series.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

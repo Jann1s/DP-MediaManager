@@ -10,6 +10,7 @@ namespace DP_MediaManager.LibraryItem
     {
         private string description;
         private float rating;
+        private string poster;
         private List<Entry> episodes;
 
         public Season(string description, float rating)
@@ -38,6 +39,11 @@ namespace DP_MediaManager.LibraryItem
         public float GetRating()
         {
             return rating;
+        }
+
+        public string GetPoster()
+        {
+            return poster;
         }
     }
 }
