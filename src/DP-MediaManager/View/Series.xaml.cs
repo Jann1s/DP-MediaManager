@@ -16,17 +16,20 @@ using System.Windows.Shapes;
 namespace DP_MediaManager.View
 {
     /// <summary>
-    /// Interaction logic for Collection.xaml
+    /// Interaction logic for Series.xaml
     /// </summary>
-    public partial class Collection : Page
+    public partial class Series : Page
     {
-        public Collection()
+        private List<LibraryItem.Season> seasons;
+
+        public Series()
         {
             InitializeComponent();
 
-            List<LibraryItem.LibraryFactory> movies = MediaManager.Instance.GetLibrary();
-            
-            int rows = (int)Math.Ceiling((double)movies.Count / 4);
+            LibraryItem.LibraryFactory series = MediaManager.Instance.GetLibrary()[MediaManager.Instance.SelectedEntry];
+            seasons = ((LibraryItem.Series)series).GetSeasons();
+
+            int rows = (int)Math.Ceiling((double)seasons.Count / 4);
             int currentRow = 0;
             int currentColumn = 0;
             int currentItem = 0;
@@ -37,11 +40,12 @@ namespace DP_MediaManager.View
                 grid_View.RowDefinitions[i].Height = new GridLength(220, GridUnitType.Pixel);
             }
 
-            foreach (LibraryItem.LibraryFactory item in movies)
+            int seasonCounter = 1;
+            foreach (LibraryItem.Season item in seasons)
             {
-                List<string> info = item.GetCardInfo();
+                //item.GetPoster();
                 TextBlock textBlock = new TextBlock();
-                textBlock.Text = info[0] + " | " + info[1];
+                textBlock.Text = "Season " + seasonCounter.ToString();
                 textBlock.Tag = currentItem;
                 textBlock.MouseDown += TextBlock_MouseDown;
 
@@ -49,10 +53,10 @@ namespace DP_MediaManager.View
                 Grid.SetRow(textBlock, currentRow);
 
                 grid_View.Children.Add(textBlock);
-                
+
                 currentColumn++;
                 currentItem++;
-
+                seasonCounter++;
                 if (currentColumn > 3)
                 {
                     currentRow++;
@@ -65,20 +69,11 @@ namespace DP_MediaManager.View
         {
             TextBlock tmpText = (TextBlock)sender;
             int index = (int)tmpText.Tag;
-            List<LibraryItem.LibraryFactory> library = MediaManager.Instance.GetLibrary();
 
             MediaManager.Instance.SelectedEntry = index;
 
-            if (library[index] is LibraryItem.Movie)
-            {
-                Entry entry = new Entry();
-                NavigationService.Navigate(entry);
-            }
-            else if (library[index] is LibraryItem.Series)
-            {
-                Series series = new Series();
-                NavigationService.Navigate(series);
-            }
+            Season season = new Season();
+            NavigationService.Navigate(season);
         }
     }
 }
