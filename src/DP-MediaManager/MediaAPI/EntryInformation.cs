@@ -27,14 +27,15 @@ namespace DP_MediaManager.MediaAPI
     
             
         }
-        public List<String> GetRating()
+        public double GetRating()
         {
-            List<String> reviews = new List<string>();
-            foreach (Review r in movie.Reviews.Results)
-            {
-                reviews.Add(r.Content);
-            }
-            return reviews;
+            double rating = movie.Popularity;
+            //List<String> reviews = new List<string>();
+            //foreach (Review r in movie.Reviews.Results)
+            //{
+            //    reviews.Add(r.Content);
+            //}
+            return rating;
         }
         public DateTime GetReleaseDate()
         {
@@ -76,6 +77,10 @@ namespace DP_MediaManager.MediaAPI
                 castList.Add(cast);
             }
             return castList;
+        }
+        public string GetDescription()
+        {
+            return movie.Tagline;
         }
     }
 }
