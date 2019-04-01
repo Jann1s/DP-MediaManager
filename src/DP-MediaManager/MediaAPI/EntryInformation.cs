@@ -24,19 +24,17 @@ namespace DP_MediaManager.MediaAPI
             apiKey = "24db2192e9447969b597b0a6823f7e8e";
             client = new TMDbClient(apiKey);
             movie = client.GetMovieAsync(entryId).Result;
+    
+            
         }
-        public string GetRating()
+        public List<String> GetRating()
         {
-            //Should work but doesnt
-            string review = null;
+            List<String> reviews = new List<string>();
             foreach (Review r in movie.Reviews.Results)
             {
-                review += "Author:" + r.Author;
-                review += "\t";
-                review += "Review:" + r.Content;
-                review += "\t";
+                reviews.Add(r.Content);
             }
-            return review;
+            return reviews;
         }
         public DateTime GetReleaseDate()
         {
@@ -46,9 +44,14 @@ namespace DP_MediaManager.MediaAPI
         {
             return movie.Title;
         }
-        public string GetGenre()
+        public List<String> GetGenre()
         {
-            return null;
+            List<String> s = new List<string>();
+            foreach (Genre genre in movie.Genres)
+            {
+                s.Add(genre.Name);
+            }
+            return s;
         }
         public string GetPoster()
         {
@@ -56,26 +59,23 @@ namespace DP_MediaManager.MediaAPI
             string img = null;
             foreach(ImageData poster in movie.Images.Posters)
             {
-                img += poster.FilePath.ToString();
+                //
             }
             return img;
         }
-        
         public List<LibraryItem.Cast> GetCast()
         {
-            List<LibraryItem.Cast> cast = new List<LibraryItem.Cast>();
+            List<LibraryItem.Cast> castList = new List<LibraryItem.Cast>();
             foreach( Cast member in movie.Credits.Cast)
             {
-                //Cast constructor needs name role 
-                //  member.Name;
-                //  member.Character;
-                
-                cast.Add( new LibraryItem.Cast());
-              
-               
-                
+                LibraryItem.Cast cast = new LibraryItem.Cast();
+                cast.Firstname = member.Name;
+                //cast.Lastname = ;
+                //cast.GeneralInformation = ;
+                cast.Role = member.Character;
+                castList.Add(cast);
             }
-            return cast;
+            return castList;
         }
     }
 }
