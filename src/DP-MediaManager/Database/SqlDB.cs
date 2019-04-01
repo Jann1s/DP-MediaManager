@@ -20,10 +20,24 @@ namespace DP_MediaManager.Database
 
         public Boolean Add(IMovie movie, ISeries series)
         {
-            return true;
+            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            {
+                if (movie != null)
+                {
+                    //Movie
+                    cnn.Execute("INSERT INTO values ", movie);
+                    return true;
+                }
+                else
+                {
+                    //Series
+                    cnn.Execute("INSERT INTO values ", series);
+                    return true;
+                }
+            }
         }
 
-        public void Update()
+        public void Update(int id)
         {
 
         }
@@ -33,22 +47,26 @@ namespace DP_MediaManager.Database
 
         }
 
-        public Boolean Remove()
+        public Boolean Remove(int id)
         {
             return true;
         }
 
         public List<Entry> GetAll()
         {
-            return null;
-        }
-
-        public Entry Get()
-        {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
                 var output = cnn.Query<Entry>("SELECT * FROM entry", new DynamicParameters());
                 return output.ToList();
+            }
+        }
+
+        public Entry Get(int id)
+        {
+            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            {
+                var output = cnn.Query<Entry>("SELECT * FROM entry", new DynamicParameters());
+                return (Entry)output;
             }
         }
     }

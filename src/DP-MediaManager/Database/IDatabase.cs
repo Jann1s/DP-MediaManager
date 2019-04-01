@@ -10,10 +10,10 @@ namespace DP_MediaManager.Database
     interface IDatabase
     {
         Boolean Add(IMovie movie, ISeries series);
-        void Update();
+        void Update(int id);
         void Search(String searchItem);
-        Boolean Remove();
+        Boolean Remove(int id);
         List<Entry> GetAll();
-        Entry Get();
+        Entry Get(int id);
     }
 }

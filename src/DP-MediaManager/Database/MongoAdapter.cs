@@ -17,7 +17,7 @@ namespace DP_MediaManager.Database
             return true;
         }
 
-        public void Update()
+        public void Update(int id)
         {
 
         }
@@ -27,7 +27,7 @@ namespace DP_MediaManager.Database
 
         }
 
-        public Boolean Remove()
+        public Boolean Remove(int id)
         {
             return true;
         }
@@ -37,7 +37,7 @@ namespace DP_MediaManager.Database
             return null;
         }
 
-        public Entry Get()
+        public Entry Get(int id)
         {
             return null;
         }
