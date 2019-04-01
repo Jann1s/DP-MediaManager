@@ -53,6 +53,7 @@ namespace DP_MediaManager
             LibraryFactory tmpItem9 = LibraryFactory.getLibrary(LibraryType.Series);
             Season tmpSeason = new Season("Awesome show", 3.5f);
             tmpSeason.AddEpisode(new Entry { Description = "wow", Name = "huhu" });
+
             ((Series)tmpItem9).AddSeason(tmpSeason);
             ((Series)tmpItem9).Name = "Game of Thrones";
             ((Series)tmpItem9).Description = "Just Awesome";
