@@ -44,6 +44,7 @@ namespace DP_MediaManager.View
                 MediaManager.Instance.CachePoster();
             }
 
+            MediaManager.Instance.Notify();
             this.Close();
         }
 
