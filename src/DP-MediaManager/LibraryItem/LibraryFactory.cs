@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace DP_MediaManager.LibraryItem
 {
-    abstract class LibraryFactory
+    public abstract class LibraryFactory
     {
-        public static LibraryFactory GetLibrary(LibraryType libraryType)
+        public static LibraryFactory GetLibrary(LibraryType libraryType, int id)
         {
             switch (libraryType)
             {
                 case LibraryType.Movie:
-                    return new Movie();
+                    return new Movie(id);
                 case LibraryType.Series:
-                    return new Series();
+                    return new Series(id);
                 default:
                     return null;
             }
@@ -24,9 +24,11 @@ namespace DP_MediaManager.LibraryItem
         public abstract List<string> GetCardInfo();
 
         public abstract Entry GetDetails(int season = -1, int episode = -1);
+
+        public abstract int GetId();
     }
 
-    enum LibraryType {
+    public enum LibraryType {
         Movie,
         Series
     }

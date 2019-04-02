@@ -10,33 +10,40 @@ namespace DP_MediaManager.MediaAPI
     class SeriesInformation : IEntryInformation
     {
         private EntryInformation info;
+        private int id;
+
         public SeriesInformation(int id)
         {
             info = new EntryInformation(id);
+            this.id = id;
         }
-        List<LibraryFactory> IEntryInformation.GetEntryData()
+
+        public LibraryFactory GetEntryData()
         {
             List<LibraryFactory> data = new List<LibraryFactory>();
-            LibraryFactory series = LibraryFactory.GetLibrary(LibraryType.Series);
+            LibraryFactory series = LibraryFactory.GetLibrary(LibraryType.Series, id);
             ((Series)series).Name = info.GetTVName();
             ((Series)series).Description = info.GetTVDescription();
             ((Series)series).Poster = info.GetTVPoster();
+
             foreach (Season s in info.getTVSeasons())
             {
                 ((Series)series).AddSeason(s);
             }
-            data.Add(series);
-            return data;
+
+            return series;
 
         }
         public void GetGeneralInformation()
         {
 
         }
+
         public List<LibraryItem.Season> GetSeasonList()
         {
             return info.getTVSeasons();
         }
+
         public Entry GetEpisodeInformation(int seasonNum,int episodeId)
         {
             List<LibraryItem.Season> s = info.getTVSeasons();
@@ -44,7 +51,5 @@ namespace DP_MediaManager.MediaAPI
 
             return season.GetEpisode(episodeId);
         }
-
-
     }
 }

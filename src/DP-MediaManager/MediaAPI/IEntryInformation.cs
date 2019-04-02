@@ -8,6 +8,6 @@ namespace DP_MediaManager.MediaAPI
 {
     interface IEntryInformation
     {
-        List<LibraryItem.LibraryFactory> GetEntryData();
+        LibraryItem.LibraryFactory GetEntryData();
     }
 }

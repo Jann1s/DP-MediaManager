@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DP_MediaManager"
         mc:Ignorable="d"
-        Title="Collection" Height="450" Width="800" Background="#FF2B2B2B" Foreground="#FFE4E4E4" MinWidth="800" MinHeight="450">
+        Title="Collection" Height="600" Width="1000" Background="#FF4F4F4F" Foreground="#FFE4E4E4" MinWidth="1000" MinHeight="600">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*" MinHeight="35px" MaxHeight="50px" />
@@ -19,9 +19,9 @@
         </Grid.ColumnDefinitions>
 
         <!-- Navigation -->
-        <Button x:Name="btn_showCollection" Content="Show Collection"   Foreground="#FFF1F1F1" Background="#FF5D5D5D" BorderThickness="0px" Grid.Column="0" Grid.Row="0" Click="Btn_showCollection_Click" />
-        <Button x:Name="btn_addEntry"       Content="Add Entry"         Foreground="#FFF1F1F1" Background="#FF5D5D5D" BorderThickness="0px" Grid.Column="0" Grid.Row="1" Click="Btn_addEntry_Click" />
-        <Button x:Name="btn_settings"       Content="Settings"          Foreground="#FFF1F1F1" Background="#FF5D5D5D" BorderThickness="0px" Grid.Column="0" Grid.Row="4" />
+        <Button x:Name="btn_showCollection" Content="Show Collection"   Foreground="#FFF1F1F1" Background="#FF3C3A3A" BorderThickness="0px" Grid.Column="0" Grid.Row="0" Click="Btn_showCollection_Click" />
+        <Button x:Name="btn_addEntry"       Content="Manage Entry"         Foreground="#FFF1F1F1" Background="#FF3C3A3A" BorderThickness="0px" Grid.Column="0" Grid.Row="1" Click="Btn_addEntry_Click" />
+        <!--Button x:Name="btn_settings"       Content="Settings"          Foreground="#FFF1F1F1" Background="#FF3C3A3A" BorderThickness="0px" Grid.Column="0" Grid.Row="4" /-->
         <Frame x:Name="frameMain" Content="Itsame" Grid.Column="1" Grid.Row="0" Grid.RowSpan="4" Source="/DP-MediaManager;component/View/Collection.xaml" NavigationUIVisibility="Hidden" />
         <!--Navigating="frame_Navigating"-->
     </Grid>

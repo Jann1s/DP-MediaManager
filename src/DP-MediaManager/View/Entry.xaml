@@ -8,7 +8,55 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Entry">
 
-    <Grid>
-        <Label x:Name="lbl_Title" Content="" FontSize="72" />
-    </Grid>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid ScrollViewer.CanContentScroll="True">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="20px" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="20px" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20px" />
+                <RowDefinition Height="50px" />
+                <RowDefinition Height="50px" />
+                <RowDefinition Height="50px" />
+                <RowDefinition Height="50px" />
+                <RowDefinition Height="50px" />
+                <RowDefinition Height="50px" />
+                <RowDefinition Height="50px" />
+                <RowDefinition Height="50px" />
+                <RowDefinition Height="50px" />
+                <RowDefinition Height="50px" />
+                <RowDefinition Height="50px" />
+                <RowDefinition Height="50px" />
+                <RowDefinition Height="50px" />
+            </Grid.RowDefinitions>
+
+            <Label Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="4" x:Name="lbl_Title" Content="Test" FontSize="28" FontWeight="Bold" />
+            <Image Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Grid.RowSpan="4" x:Name="imageBox_poster" />
+
+            <Label Grid.Column="4" Grid.Row="2" Grid.ColumnSpan="1" Content="Release Year" FontSize="18" FontWeight="Bold" />
+            <Label Grid.Column="5" Grid.Row="2" Grid.ColumnSpan="2" x:Name="lbl_ReleaseDate" Content="Test" FontSize="18" />
+
+            <Label Grid.Column="4" Grid.Row="3" Grid.ColumnSpan="1" x:Name="lbl_Season" Content="Season" FontSize="18" FontWeight="Bold" Visibility="Hidden" />
+            <Label Grid.Column="5" Grid.Row="3" Grid.ColumnSpan="2" x:Name="lbl_SeasonText" Content="Test" FontSize="18" Visibility="Hidden" />
+
+            <Label Grid.Column="4" Grid.Row="4" Grid.ColumnSpan="1" x:Name="lbl_EpisodeNo" Content="Episode No." FontSize="18" FontWeight="Bold" Visibility="Hidden" />
+            <Label Grid.Column="5" Grid.Row="4" Grid.ColumnSpan="2" x:Name="lbl_EpisodeNo_Text" Content="Test" FontSize="18" Visibility="Hidden" />
+
+            <Label Grid.Column="4" Grid.Row="5" Grid.ColumnSpan="1" x:Name="lbl_EpisodeTitle" Content="Episode Title" FontSize="18" FontWeight="Bold" Visibility="Hidden" />
+            <Label Grid.Column="5" Grid.Row="5" Grid.ColumnSpan="2" x:Name="lbl_EpisodeTitle_Text" Content="Test" FontSize="18" Visibility="Hidden" />
+
+            <Label Grid.Column="1" Grid.Row="7" Grid.ColumnSpan="3" Content="Description" FontSize="18" FontWeight="Bold" />
+            <Border Grid.Column="1" Grid.Row="8" Grid.ColumnSpan="6" Grid.RowSpan="5" BorderBrush="Black" BorderThickness="1px">
+                <TextBlock  x:Name="lbl_Description" Text="TEST TEST TEST" FontSize="16" Padding="5px" TextWrapping="Wrap" />
+            </Border>
+            
+        </Grid>
+    </ScrollViewer>
 </Page>

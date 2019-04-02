@@ -21,7 +21,6 @@ namespace DP_MediaManager.MediaAPI
         private TMDbLib.Objects.Movies.Movie movie;
         private TvShow tvshow;
        
-
         public EntryInformation(int entryId)
         {
             this.entryId = entryId;
@@ -31,6 +30,7 @@ namespace DP_MediaManager.MediaAPI
             tvshow = client.GetTvShowAsync(entryId).Result;
             
         }
+
         //MOVIE STUFF
         public double GetMovieRating()
         {
@@ -42,14 +42,17 @@ namespace DP_MediaManager.MediaAPI
             //}
             return rating;
         }
+
         public DateTime GetMovieReleaseDate()
         {
             return movie.ReleaseDate.Value;
         }
+
         public string GetMovieName()
         {
             return movie.Title;
         }
+
         public string GetMovieGenre()
         {
             string s = null;
@@ -60,32 +63,34 @@ namespace DP_MediaManager.MediaAPI
             }
             return s;
         }
+
         public string GetMoviePoster()
         {
-            //Same shit as rating
-
-
-            string img = movie.PosterPath;
-
-            // poster.FilePath;
-
+            string img = "http://image.tmdb.org/t/p/w200" + movie.PosterPath;
             return img;
         }
+
         public List<LibraryItem.Cast> GetMovieCast()
         {
             List<LibraryItem.Cast> castList = new List<LibraryItem.Cast>();
-            foreach (TMDbLib.Objects.Movies.Cast member in movie.Credits.Cast)
-            {
-                LibraryItem.Cast cast = new LibraryItem.Cast();
-                cast.Firstname = member.Name;
-                //cast.Lastname = ;
-                cast.GeneralInformation = member.ProfilePath; ;
-                cast.Role = member.Character;
 
-                castList.Add(cast);
+            if (movie.Credits != null)
+            {
+                foreach (TMDbLib.Objects.Movies.Cast member in movie.Credits.Cast)
+                {
+                    LibraryItem.Cast cast = new LibraryItem.Cast();
+                    cast.Firstname = member.Name;
+                    //cast.Lastname = ;
+                    cast.GeneralInformation = member.ProfilePath; ;
+                    cast.Role = member.Character;
+
+                    castList.Add(cast);
+                }
             }
+            
             return castList;
         }
+
         //public List<LibraryItem.Cast> GetDirectors()
         //{
         //    List<LibraryItem.Cast> directorList = new List<LibraryItem.Cast>();
@@ -94,9 +99,10 @@ namespace DP_MediaManager.MediaAPI
 
         //    }
         //}
+
         public string GetMovieDescription()
         {
-            return movie.Tagline;
+            return movie.Overview;
         }
 
         //TV SHOW STUFF
@@ -110,14 +116,17 @@ namespace DP_MediaManager.MediaAPI
             //}
             return rating;
         }
+
         public DateTime GetTVReleaseDate()
         {
             return tvshow.FirstAirDate.Value;
         }
+
         public string GetTVName()
         {
             return tvshow.Name;
         }
+
         public string GetTVGenre()
         {
             string s = null;
@@ -128,17 +137,23 @@ namespace DP_MediaManager.MediaAPI
             }
             return s;
         }
-        public string GetTVPoster()
+
+        public string GetTVPoster(string poster = null)
         {
-            //Same shit as rating
+            string img = "";
 
-
-            string img = tvshow.PosterPath;
-
-            // poster.FilePath;
-
+            if (poster != null)
+            {
+                img = "http://image.tmdb.org/t/p/w200" + poster;
+            }
+            else
+            {
+                img = "http://image.tmdb.org/t/p/w200" + tvshow.PosterPath;
+            }
+            
             return img;
         }
+
         public List<LibraryItem.Cast> GetTVCast()
         {
             List<LibraryItem.Cast> castList = new List<LibraryItem.Cast>();
@@ -154,6 +169,7 @@ namespace DP_MediaManager.MediaAPI
             }
             return castList;
         }
+
         public List<LibraryItem.Cast> GetTVDirectors()
         {
             List<LibraryItem.Cast> directorList = new List<LibraryItem.Cast>();
@@ -170,10 +186,12 @@ namespace DP_MediaManager.MediaAPI
             }
             return directorList;
         }
+
         public string GetTVDescription()
         {
             return tvshow.OriginalName;
         }
+
         public List<LibraryItem.Season> getTVSeasons()
         {
             List<LibraryItem.Season> seasons = new List<Season>();
@@ -184,47 +202,48 @@ namespace DP_MediaManager.MediaAPI
                 TvSeason tvseason = new TvSeason();
                 tvseason = client.GetTvSeasonAsync(entryId, i).Result;
                 
-                Season tmpSeason = new Season(tvseason.Name, 0);
-                foreach (TMDbLib.Objects.Search.TvSeasonEpisode e in tvseason.Episodes)
+                if (tvseason.Episodes != null)
                 {
-                    TvEpisode tvEpisode = new TvEpisode();
-                    tvEpisode = client.GetTvEpisodeAsync(entryId, i, e.EpisodeNumber).Result;
+                    Season tmpSeason = new Season(tvseason.Name, GetTVPoster(tvseason.PosterPath), 0);
+                    foreach (TMDbLib.Objects.Search.TvSeasonEpisode e in tvseason.Episodes)
+                    {
+                        TvEpisode tvEpisode = new TvEpisode();
+                        tvEpisode = client.GetTvEpisodeAsync(entryId, i, e.EpisodeNumber).Result;
 
-                    string name = tvEpisode.Name;
-                    DateTime release = tvEpisode.AirDate.Value;
-                    string description = tvEpisode.Overview;
-                    List<LibraryItem.Cast> cast = GetEpisodeCast(tvEpisode);
-                    string poster = null;//tvEpisode.Images.Stills
-                    tmpSeason.AddEpisode(new Entry { Description = description, Name = name, Release = release, Cast = cast, Poster = poster});
+                        string name = tvEpisode.Name;
+                        DateTime release = tvEpisode.AirDate.Value;
+                        string description = tvEpisode.Overview;
+                        List<LibraryItem.Cast> cast = GetEpisodeCast(tvEpisode);
+                        string poster = GetTVPoster(tvEpisode.StillPath);
+
+                        tmpSeason.AddEpisode(new Entry { Description = description, Name = name, Release = release, Cast = cast, Poster = poster });
+                    }
+                    seasons.Add(tmpSeason);
                 }
-                seasons.Add(tmpSeason);
-
 
                 i++;
-
             }
-
-
+            
             return seasons;
-           
-
-
-
-
         }
+
         public List<LibraryItem.Cast> GetEpisodeCast(TvEpisode e)
         {
             List<LibraryItem.Cast> castList = new List<LibraryItem.Cast>();
             
-            foreach (TMDbLib.Objects.TvShows.Cast d in e.Credits.Cast)
+            if (e.Credits != null)
             {
-                LibraryItem.Cast cast = new LibraryItem.Cast();
-                cast.Firstname = d.Name;
-                cast.GeneralInformation = d.ProfilePath;
-                cast.Role = d.Character;
+                foreach (TMDbLib.Objects.TvShows.Cast d in e.Credits.Cast)
+                {
+                    LibraryItem.Cast cast = new LibraryItem.Cast();
+                    cast.Firstname = d.Name;
+                    cast.GeneralInformation = d.ProfilePath;
+                    cast.Role = d.Character;
 
-                castList.Add(cast);
+                    castList.Add(cast);
+                }
             }
+            
             return castList;
         }
     }
