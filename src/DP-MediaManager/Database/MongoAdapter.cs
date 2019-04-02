@@ -20,14 +20,14 @@ namespace DP_MediaManager.Database
             return ConfigurationManager.ConnectionStrings[id].ConnectionString;
         }
 
-        public Boolean Add(LibraryItem.LibraryFactory item)
+        public void Add(LibraryItem.LibraryFactory item)
         {
-            return true;
+
         }
 
-        public Boolean Update(LibraryItem.LibraryFactory item)
+        public void Update(LibraryItem.LibraryFactory item)
         {
-            return true;
+
         }
 
         public List<LibraryItem.LibraryFactory> Search(String searchItem)
@@ -35,9 +35,9 @@ namespace DP_MediaManager.Database
             return null;
         }
 
-        public Boolean Remove(LibraryItem.LibraryFactory item)
+        public void Remove(LibraryItem.LibraryFactory item)
         {
-            return true;
+
         }
 
         public List<LibraryItem.LibraryFactory> GetAll()

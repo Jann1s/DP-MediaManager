@@ -18,28 +18,54 @@ namespace DP_MediaManager.Database
             return ConfigurationManager.ConnectionStrings[id].ConnectionString;
         }
 
-        public Boolean Add(LibraryItem.LibraryFactory item)
+        public void Add(LibraryItem.LibraryFactory item)
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
-                if (item != null)
+                //If Movie
+                if (item is LibraryItem.Movie)
                 {
-                    //Movie
-                    cnn.Execute("INSERT INTO values ", item);
-                    return true;
+                    LibraryItem.Entry movie = ((LibraryItem.Movie)item).GetMovie();
+                    cnn.Execute("INSERT INTO Entry (name, description, releaseYear, poster) values (@Name, @Description, @Release, @Poster)", movie);
                 }
-                else
+
+                //If Series
+                else if (item is LibraryItem.Series)
                 {
-                    //Series
-                    cnn.Execute("INSERT INTO values ", item);
-                    return true;
+                    String seriesName = ((LibraryItem.Series)item).Name;
+                    String seriesDescription = ((LibraryItem.Series)item).Description;
+                    String seriesPoster = ((LibraryItem.Series)item).Poster;
+                    List<Season> seasons = ((LibraryItem.Series)item).GetSeasons();
+
+                    //Series - Data
+                    cnn.Execute("INSERT INTO Entry (name, description, poster) values (" + seriesName + ", " + seriesDescription + ", " + seriesPoster + ")");
+
+                    //Season - Data
+                    foreach (var season in seasons)
+                    {
+                        string seasonDescription = season.GetDescription();
+                        cnn.Execute("INSERT INTO Season (name, description, poster) values (" + seasonDescription + ")");
+                        List<Entry> episodes = season.GetEpisodes();
+
+                        //Episodes - Data
+                        foreach (var episode in episodes)
+                        {
+                            String episodeName = episode.Name;
+                            String episodeDescription = episode.Description;
+                            String episodePoster = episode.Poster;
+                            DateTime episodeRelease = episode.Release;
+
+                            cnn.Execute("INSERT INTO Entry (name, description, poster) values (" + episodeName + episodeDescription + episodeDescription + episodePoster + ")");
+                        }
+                    }
+
                 }
             }
         }
 
-        public Boolean Update(LibraryItem.LibraryFactory item)
+        public void Update(LibraryItem.LibraryFactory item)
         {
-            return true;
+
         }
 
         public List<LibraryItem.LibraryFactory> Search(String searchItem)
@@ -47,9 +73,9 @@ namespace DP_MediaManager.Database
             return null;
         }
 
-        public Boolean Remove(LibraryItem.LibraryFactory item)
+        public void Remove(LibraryItem.LibraryFactory item)
         {
-            return true;
+
         }
 
         public List<LibraryItem.LibraryFactory> GetAll()
