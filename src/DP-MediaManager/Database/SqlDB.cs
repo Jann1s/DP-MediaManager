@@ -15,20 +15,46 @@ namespace DP_MediaManager.Database
     {
         public string LoadConnectionString(String id = "Default")
         {
-            return ConfigurationManager.ConnectionStrings[id].ConnectionString;
+            string fixedConnectionString = ConfigurationManager.ConnectionStrings[id].ConnectionString.Replace("{AppDir}", AppDomain.CurrentDomain.BaseDirectory);
+
+            return fixedConnectionString;
         }
 
-        public void Add(LibraryItem.LibraryFactory item)
+        public void Add(LibraryFactory item)
         {
-            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            using (SQLiteConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
-                //If Movie
-                if (item is LibraryItem.Movie)
-                {
-                    LibraryItem.Entry movie = ((LibraryItem.Movie)item).GetMovie();
-                    cnn.Execute("INSERT INTO Entry (name, description, releaseYear, poster) values (@Name, @Description, @Release, @Poster)", movie);
-                }
+                cnn.Open();
 
+                //If Movie
+                if (item is Movie)
+                {
+                    //Entry Tabelle inserten
+                    Entry movie = ((Movie)item).GetMovie();
+                    
+                    SQLiteCommand commandEntry = new SQLiteCommand("INSERT INTO Entry (name, description, releaseYear, poster) VALUES (@name, @desc, @release, @poster)", cnn);
+                    commandEntry.Parameters.AddWithValue("@name", movie.Name);
+                    commandEntry.Parameters.AddWithValue("@desc", movie.Description);
+                    commandEntry.Parameters.AddWithValue("@release", movie.Release);
+                    commandEntry.Parameters.AddWithValue("@poster", movie.Poster);
+
+                    commandEntry.ExecuteNonQuery();
+
+                    //Entry Tabelle -> ID bekommen vom letzten insert
+                    SQLiteCommand commandID= new SQLiteCommand("SELECT * FROM Entry WHERE name = @name AND description = @desc", cnn);
+                    commandID.Parameters.AddWithValue("@name", movie.Name);
+                    commandID.Parameters.AddWithValue("@desc", movie.Description);
+
+                    long entryId = (long)commandID.ExecuteScalar();
+
+                    //Movie Tabelle -> movie_id und entry_id inserten
+                    SQLiteCommand commandMovie = new SQLiteCommand("INSERT INTO Movie (movie_id, entry_id, genre) VALUES (@movieId, @entryId, @genre)", cnn);
+                    commandMovie.Parameters.AddWithValue("@movieId", ((Movie)item).GetId());
+                    commandMovie.Parameters.AddWithValue("@entryId", entryId);
+                    commandMovie.Parameters.AddWithValue("@genre", ((Movie)item).GetGenre());
+
+                    commandMovie.ExecuteNonQuery();
+                }
                 //If Series
                 else if (item is LibraryItem.Series)
                 {
@@ -60,6 +86,8 @@ namespace DP_MediaManager.Database
                     }
 
                 }
+
+                cnn.Close();
             }
         }
 

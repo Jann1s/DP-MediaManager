@@ -10,10 +10,12 @@ namespace DP_MediaManager.LibraryItem
     {
         private Entry entry;
         private int id;
+        private string genre;
 
-        public Movie(int id)
+        public Movie(int id, string genre)
         {
             this.id = id;
+            this.genre = genre;
         }
 
         public void SetEntry(Entry entry)
@@ -44,6 +46,11 @@ namespace DP_MediaManager.LibraryItem
         public override int GetId()
         {
             return id;
+        }
+
+        public override string GetGenre()
+        {
+            return genre;
         }
     }
 }
