@@ -22,7 +22,7 @@ namespace DP_MediaManager.MediaAPI
         {
             List<LibraryFactory> data = new List<LibraryFactory>();
             LibraryFactory movie = LibraryFactory.GetLibrary(LibraryType.Movie);
-            ((Movie)movie).SetEntry(new Entry { Description = info.GetDescription(), Name = info.GetName() });
+            ((Movie)movie).SetEntry(new Entry { Description = info.GetMovieDescription(), Name = info.GetMovieName(), Release = info.GetMovieReleaseDate(), Poster = info.GetMoviePoster(), Cast = info.GetMovieCast() });
             data.Add(movie);
             return data;
         }
