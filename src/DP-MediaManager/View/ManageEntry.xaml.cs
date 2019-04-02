@@ -27,7 +27,24 @@ namespace DP_MediaManager.View
 
         private void Btn_apply_Click(object sender, RoutedEventArgs e)
         {
-            getId(textBox_iD.Text);
+            int id = getId(textBox_iD.Text);
+
+            if (textBox_iD.Text.Contains("/tv/"))
+            {
+                MediaAPI.SeriesInformation seriesInformation = new MediaAPI.SeriesInformation(id);
+                LibraryItem.LibraryFactory item = seriesInformation.GetEntryData();
+                MediaManager.Instance.AddItem(item);
+                MediaManager.Instance.CachePoster();
+            }
+            else
+            {
+                MediaAPI.MovieInformation movieInformation = new MediaAPI.MovieInformation(id);
+                LibraryItem.LibraryFactory item = movieInformation.GetEntryData();
+                MediaManager.Instance.AddItem(item);
+                MediaManager.Instance.CachePoster();
+            }
+
+            this.Close();
         }
 
         private void Btn_delete_Click(object sender, RoutedEventArgs e)

@@ -33,10 +33,6 @@ namespace DP_MediaManager
         public MainWindow()
         {
             InitializeComponent();
-
-            MediaManager tempManager = new MediaManager();
-            MediaManager.Instance = tempManager;
-            manager = MediaManager.Instance;
         }
 
         private void Btn_addEntry_Click(object sender, RoutedEventArgs e)
@@ -47,9 +43,9 @@ namespace DP_MediaManager
 
         private void Btn_showCollection_Click(object sender, RoutedEventArgs e)
         {
-            manager.SelectedItem = -1;
-            manager.SelectedSeason = -1;
-            manager.SelectedEpisode = -1;
+            MediaManager.Instance.SelectedItem = -1;
+            MediaManager.Instance.SelectedSeason = -1;
+            MediaManager.Instance.SelectedEpisode = -1;
 
             View.Collection collection = new View.Collection();
             frameMain.NavigationService.Navigate(collection);

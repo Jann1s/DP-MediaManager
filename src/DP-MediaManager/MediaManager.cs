@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.IO;
 
 using DP_MediaManager.LibraryItem;
+using System.Threading;
 
 namespace DP_MediaManager
 {
@@ -24,7 +25,7 @@ namespace DP_MediaManager
         
         public MediaManager()
         {
-            System.IO.Directory.CreateDirectory(CACHEPATH);
+            Directory.CreateDirectory(CACHEPATH);
             SelectedEpisode = -1;
             SelectedItem = -1;
             SelectedSeason = -1;
@@ -76,11 +77,19 @@ namespace DP_MediaManager
 
             //Try to download the Poster
             CachePoster();
+
+            MainWindow mainWindow = new MainWindow();
+            mainWindow.Show();
         }
 
         public List<LibraryFactory> GetLibrary()
         {
             return libItems;
+        }
+
+        public void AddItem(LibraryFactory item)
+        {
+            libItems.Add(item);
         }
 
         public void DeleteItem(int id)
@@ -113,7 +122,7 @@ namespace DP_MediaManager
             return GetPosterName(file);
         }
 
-        private void CachePoster()
+        public void CachePoster()
         {
             foreach (LibraryFactory item in libItems)
             {
@@ -121,10 +130,7 @@ namespace DP_MediaManager
 
                 if (!File.Exists(fileName))
                 {
-                    using (WebClient client = new WebClient())
-                    {
-                        client.DownloadFile(item.GetCardInfo()[2], fileName);
-                    }
+                    DownloadPoster(item.GetCardInfo()[2], fileName);
                 }
 
                 if (item is Series)
@@ -137,10 +143,7 @@ namespace DP_MediaManager
 
                         if (!File.Exists(seasonFileName))
                         {
-                            using (WebClient client = new WebClient())
-                            {
-                                client.DownloadFile(season.GetPoster(), seasonFileName);
-                            }
+                            DownloadPoster(season.GetPoster(), seasonFileName);
                         }
 
                         int eCounter = 0;
@@ -150,16 +153,42 @@ namespace DP_MediaManager
 
                             if (!File.Exists(episodeFileName))
                             {
-                                using (WebClient client = new WebClient())
-                                {
-                                    client.DownloadFile(entry.Poster, episodeFileName);
-                                }
+                                DownloadPoster(entry.Poster, episodeFileName);
                             }
 
                             eCounter++;
                         }
 
                         sCounter++;
+                    }
+                }
+            }
+        }
+
+        private void DownloadPoster(string url, string fileLocation)
+        {
+            using (WebClient client = new WebClient())
+            {
+                try
+                {
+                    client.DownloadDataCompleted += (sender, eventArgs) =>
+                    {
+                        byte[] fileData = eventArgs.Result;
+
+                        using (FileStream fileStream = new FileStream(fileLocation, FileMode.Create))
+                        {
+                            fileStream.Write(fileData, 0, fileData.Length);
+                        }
+                    };
+
+                    client.DownloadDataAsync(new Uri(url));
+                }
+                catch (WebException ex)
+                {
+                    if (((HttpWebResponse)ex.Response).StatusCode == HttpStatusCode.InternalServerError)
+                    {
+                        Thread.Sleep(500);
+                        DownloadPoster(url, fileLocation);
                     }
                 }
             }

@@ -20,8 +20,6 @@ namespace DP_MediaManager.View
     /// </summary>
     public partial class Season : Page
     {
-        private List<LibraryItem.Entry> episodes;
-
         public Season()
         {
             InitializeComponent();

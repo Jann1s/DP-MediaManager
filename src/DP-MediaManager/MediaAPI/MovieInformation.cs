@@ -10,21 +10,30 @@ namespace DP_MediaManager.MediaAPI
     class MovieInformation : IEntryInformation
     {
         private EntryInformation info;
+        private int id;
+
         public MovieInformation(int id)
         {
             info = new EntryInformation(id);
+            this.id = id;
         }
+
         public void GetGeneralInformation()
         {
 
         }
-        List<LibraryFactory> IEntryInformation.GetEntryData()
+
+        public LibraryFactory GetEntryData()
         {
-            List<LibraryFactory> data = new List<LibraryFactory>();
-            LibraryFactory movie = LibraryFactory.GetLibrary(LibraryType.Movie);
-            ((Movie)movie).SetEntry(new Entry { Description = info.GetMovieDescription(), Name = info.GetMovieName(), Release = info.GetMovieReleaseDate(), Poster = info.GetMoviePoster(), Cast = info.GetMovieCast() });
-            data.Add(movie);
-            return data;
+            LibraryFactory movie = LibraryFactory.GetLibrary(LibraryType.Movie, id);
+            ((Movie)movie).SetEntry(new Entry {
+                Description = info.GetMovieDescription(),
+                Name = info.GetMovieName(),
+                Release = info.GetMovieReleaseDate(),
+                Poster = info.GetMoviePoster(),
+                Cast = info.GetMovieCast() });
+
+            return movie;
         }
     }
 }
