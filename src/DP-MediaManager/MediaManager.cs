@@ -11,7 +11,7 @@ using System.Threading;
 
 namespace DP_MediaManager
 {
-    class MediaManager
+    class MediaManager : ViewController.ISubject
     {
         private const string CACHEPATH = "cache";
 
@@ -22,7 +22,8 @@ namespace DP_MediaManager
         public static MediaManager Instance { get; set; }
 
         private List<LibraryFactory> libItems = new List<LibraryFactory>();
-        
+        private List<ViewController.IObserver> observers = new List<ViewController.IObserver>();
+
         public MediaManager()
         {
             Directory.CreateDirectory(CACHEPATH);
@@ -78,8 +79,10 @@ namespace DP_MediaManager
             //Try to download the Poster
             CachePoster();
 
-            MainWindow mainWindow = new MainWindow();
-            mainWindow.Show();
+            ViewController.IObserver mainWindow = new MainWindow();
+            Register(mainWindow);
+
+            ((MainWindow)mainWindow).Show();
         }
 
         public List<LibraryFactory> GetLibrary()
@@ -171,17 +174,7 @@ namespace DP_MediaManager
             {
                 try
                 {
-                    client.DownloadDataCompleted += (sender, eventArgs) =>
-                    {
-                        byte[] fileData = eventArgs.Result;
-
-                        using (FileStream fileStream = new FileStream(fileLocation, FileMode.Create))
-                        {
-                            fileStream.Write(fileData, 0, fileData.Length);
-                        }
-                    };
-
-                    client.DownloadDataAsync(new Uri(url));
+                    client.DownloadFile(url, fileLocation);
                 }
                 catch (WebException ex)
                 {
@@ -192,6 +185,21 @@ namespace DP_MediaManager
                     }
                 }
             }
+        }
+
+        public void Register(ViewController.IObserver observer)
+        {
+            observers.Add(observer);
+        }
+
+        public void Unregister(ViewController.IObserver observer)
+        {
+            observers.Remove(observer);
+        }
+
+        public void Notify()
+        {
+            observers.ForEach(p => p.NotifyChange());
         }
     }
 }

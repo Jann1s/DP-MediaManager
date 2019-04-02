@@ -87,14 +87,13 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="MediaManager.cs" />
+    <Compile Include="ViewController\IObserver.cs" />
+    <Compile Include="ViewController\ISubject.cs" />
     <Compile Include="View\CardView.xaml.cs">
       <DependentUpon>CardView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Collection.xaml.cs">
       <DependentUpon>Collection.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\Configuration.xaml.cs">
-      <DependentUpon>Configuration.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Entry.xaml.cs">
       <DependentUpon>Entry.xaml</DependentUpon>
@@ -140,10 +139,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Collection.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Configuration.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -204,9 +199,7 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ViewController\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.110.0\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.110.0\build\net46\System.Data.SQLite.Core.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
