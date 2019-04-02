@@ -18,55 +18,47 @@ namespace DP_MediaManager.Database
             return ConfigurationManager.ConnectionStrings[id].ConnectionString;
         }
 
-        public Boolean Add(IMovie movie, ISeries series)
+        public Boolean Add(LibraryItem.LibraryFactory item)
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
-                if (movie != null)
+                if (item != null)
                 {
                     //Movie
-                    cnn.Execute("INSERT INTO values ", movie);
+                    cnn.Execute("INSERT INTO values ", item);
                     return true;
                 }
                 else
                 {
                     //Series
-                    cnn.Execute("INSERT INTO values ", series);
+                    cnn.Execute("INSERT INTO values ", item);
                     return true;
                 }
             }
         }
 
-        public void Update(int id)
-        {
-
-        }
-
-        public void Search(String searchItem)
-        {
-
-        }
-
-        public Boolean Remove(int id)
+        public Boolean Update(LibraryItem.LibraryFactory item)
         {
             return true;
         }
 
-        public List<Entry> GetAll()
+        public List<LibraryItem.LibraryFactory> Search(String searchItem)
         {
-            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
-            {
-                var output = cnn.Query<Entry>("SELECT * FROM entry", new DynamicParameters());
-                return output.ToList();
-            }
+            return null;
         }
 
-        public Entry Get(int id)
+        public Boolean Remove(LibraryItem.LibraryFactory item)
+        {
+            return true;
+        }
+
+        public List<LibraryItem.LibraryFactory> GetAll()
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
                 var output = cnn.Query<Entry>("SELECT * FROM entry", new DynamicParameters());
-                return (Entry)output;
+                //return output.ToList();
+                return null;
             }
         }
     }

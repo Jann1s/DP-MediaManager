@@ -35,10 +35,5 @@ namespace DP_MediaManager.Database
         {
             return null;
         }
-
-        public Entry Show(int id)
-        {
-            return null;
-        }
     }
 }
