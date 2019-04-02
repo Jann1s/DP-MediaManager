@@ -11,32 +11,27 @@ namespace DP_MediaManager.Database
     class MongoDB
     {
 
-        public Boolean Insert(IMovie movie, ISeries series)
-        {
-            return true;
-        }
-
-        public void Edit(int id)
+        public void Insert(LibraryItem.LibraryFactory item)
         {
 
         }
 
-        public void Find(String searchItem)
+        public void Edit(LibraryItem.LibraryFactory item)
         {
 
         }
 
-        public Boolean Delete(int id)
-        {
-            return true;
-        }
-
-        public List<Entry> ShowAll()
+        public List<LibraryItem.LibraryFactory> Find(String searchItem)
         {
             return null;
         }
 
-        public Entry Show(int id)
+        public void Delete(int id)
+        {
+            
+        }
+
+        public List<Entry> ShowAll()
         {
             return null;
         }
