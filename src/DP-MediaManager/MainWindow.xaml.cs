@@ -47,7 +47,10 @@ namespace DP_MediaManager
 
         private void Btn_showCollection_Click(object sender, RoutedEventArgs e)
         {
-            manager.SelectedEntry = -1;
+            manager.SelectedItem = -1;
+            manager.SelectedSeason = -1;
+            manager.SelectedEpisode = -1;
+
             View.Collection collection = new View.Collection();
             frameMain.NavigationService.Navigate(collection);
         }

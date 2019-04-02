@@ -9,19 +9,21 @@ namespace DP_MediaManager.LibraryItem
     class Series : LibraryFactory, ISeries
     {
         private List<Season> seasons;
-        
+        private int id;
+
         public string Description { get; set; }
         public string Name { get; set; }
         public string Poster { get; set; }
 
-        public Series()
+        public Series(int id)
         {
             seasons = new List<Season>();
+            this.id = id;
         }
 
-        public void AddSeason(string description, float rating)
+        public void AddSeason(string description, string poster, float rating = -1f)
         {
-            seasons.Add(new Season(description, rating));
+            seasons.Add(new Season(description, poster, rating));
 
         }
 
@@ -54,6 +56,11 @@ namespace DP_MediaManager.LibraryItem
             card.Add(Poster);
 
             return card;
+        }
+
+        public override int GetId()
+        {
+            return id;
         }
     }
 }
