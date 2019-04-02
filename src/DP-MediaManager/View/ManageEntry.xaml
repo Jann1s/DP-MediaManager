@@ -5,14 +5,29 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DP_MediaManager.View"
         mc:Ignorable="d"
-        Title="ManageEntry" Height="450" Width="800">
+        Title="Manage Entry" Height="160" Width="450" MinHeight="160" MaxHeight="160" MinWidth="450" MaxWidth="450">
     <Grid>
-        <Button x:Name="btn_apply" Content="Apply" HorizontalAlignment="Left" Margin="537,280,0,0" VerticalAlignment="Top" Width="75"/>
-        <Button x:Name="btn_delete" Content="Delete" HorizontalAlignment="Left" Margin="93,280,0,0" VerticalAlignment="Top" Width="75"/>
-        <TextBox x:Name="textBox_iD" HorizontalAlignment="Left" Height="23" Margin="107,64,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBox x:Name="textBox_fileLocation" HorizontalAlignment="Left" Height="23" Margin="107,124,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <Label Content="TMDB ID" HorizontalAlignment="Left" Margin="19,64,0,0" VerticalAlignment="Top"/>
-        <Label Content="File location" HorizontalAlignment="Left" Margin="28,121,0,0" VerticalAlignment="Top"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20px" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="20px" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="20px" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20px" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="20px" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="20px" />
+        </Grid.RowDefinitions>
+        
+        <Button Grid.Row="3" Grid.Column="4" Grid.ColumnSpan="2" x:Name="btn_apply" Content="Apply" Click="Btn_apply_Click" />
+        <Button Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" x:Name="btn_delete" Content="Delete" Click="Btn_delete_Click" />
 
+        <Label Grid.Row="1" Grid.Column="1" Content="TMDB URL:" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        <TextBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="4" x:Name="textBox_iD" VerticalContentAlignment="Center"/>
     </Grid>
 </Window>

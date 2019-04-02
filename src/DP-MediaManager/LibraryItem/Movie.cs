@@ -9,6 +9,12 @@ namespace DP_MediaManager.LibraryItem
     class Movie : LibraryFactory, IMovie
     {
         private Entry entry;
+        private int id;
+
+        public Movie(int id)
+        {
+            this.id = id;
+        }
 
         public void SetEntry(Entry entry)
         {
@@ -33,6 +39,11 @@ namespace DP_MediaManager.LibraryItem
         public override Entry GetDetails(int season = -1, int episode = -1)
         {
             return entry;
+        }
+
+        public override int GetId()
+        {
+            return id;
         }
     }
 }

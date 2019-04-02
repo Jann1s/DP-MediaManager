@@ -13,5 +13,14 @@ namespace DP_MediaManager
     /// </summary>
     public partial class App : Application
     {
+        private void App_Startup(object sender, StartupEventArgs e)
+        {
+            MediaManager.Instance = new MediaManager();
+        }
+
+        private void App_Exit(object sender, ExitEventArgs e)
+        {
+            Environment.Exit(0);
+        }
     }
 }

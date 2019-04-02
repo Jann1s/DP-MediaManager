@@ -6,19 +6,20 @@ using System.Threading.Tasks;
 
 namespace DP_MediaManager.LibraryItem
 {
-    class Season
+    public class Season
     {
         private string description;
         private float rating;
         private string poster;
         private List<Entry> episodes;
 
-        public Season(string description, float rating)
+        public Season(string description, string poster, float rating = -1f)
         {
             episodes = new List<Entry>();
 
             this.description = description;
             this.rating = rating;
+            this.poster = poster;
         }
 
         public void AddEpisode(Entry episode)
