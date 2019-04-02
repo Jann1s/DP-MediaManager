@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DP_MediaManager.View"
         mc:Ignorable="d"
-        Title="Manage Entry" Height="160" Width="450" MinHeight="160" MaxHeight="160" MinWidth="450" MaxWidth="450">
+        Title="Manage Entry" Height="160" Width="450" MinHeight="160" MaxHeight="160" MinWidth="450" MaxWidth="450" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20px" />

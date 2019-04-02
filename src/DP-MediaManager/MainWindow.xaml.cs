@@ -21,7 +21,7 @@ namespace DP_MediaManager
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, ViewController.IObserver
     {
         //private bool _allowDirectNavigation = false;
         //private NavigatingCancelEventArgs _navArgs = null;
@@ -51,7 +51,16 @@ namespace DP_MediaManager
             frameMain.NavigationService.Navigate(collection);
         }
 
-        
+        public void NotifyChange()
+        {
+            MediaManager.Instance.SelectedItem = -1;
+            MediaManager.Instance.SelectedSeason = -1;
+            MediaManager.Instance.SelectedEpisode = -1;
+
+            View.Collection collection = new View.Collection();
+            frameMain.NavigationService.Navigate(collection);
+        }
+
         /*
         private void frame_Navigating(object sender, NavigatingCancelEventArgs e)
         {
