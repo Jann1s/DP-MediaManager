@@ -8,7 +8,7 @@ namespace DP_MediaManager.LibraryItem
 {
     abstract class LibraryFactory
     {
-        public static LibraryFactory getLibrary(LibraryType libraryType)
+        public static LibraryFactory GetLibrary(LibraryType libraryType)
         {
             switch (libraryType)
             {
