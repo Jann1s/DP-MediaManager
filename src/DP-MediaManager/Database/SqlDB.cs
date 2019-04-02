@@ -56,35 +56,57 @@ namespace DP_MediaManager.Database
                     commandMovie.ExecuteNonQuery();
                 }
                 //If Series
-                else if (item is LibraryItem.Series)
+                else if (item is Series)
                 {
-                    String seriesName = ((LibraryItem.Series)item).Name;
-                    String seriesDescription = ((LibraryItem.Series)item).Description;
-                    String seriesPoster = ((LibraryItem.Series)item).Poster;
-                    List<Season> seasons = ((LibraryItem.Series)item).GetSeasons();
+                    SQLiteCommand commandSeries = new SQLiteCommand("INSERT INTO Series (series_id, name, description, genre, poster) VALUES (@seriesid, @name, @description, @genre, @poster)", cnn);
+                    commandSeries.Parameters.AddWithValue("@seriesid", ((Series)item).GetId());
+                    commandSeries.Parameters.AddWithValue("@name", ((Series)item).Name);
+                    commandSeries.Parameters.AddWithValue("@description", ((Series)item).Description);
+                    commandSeries.Parameters.AddWithValue("@genre", ((Series)item).GetGenre());
+                    commandSeries.Parameters.AddWithValue("@poster", ((Series)item).Poster);
 
-                    //Series - Data
-                    cnn.Execute("INSERT INTO Entry (name, description, poster) values (" + seriesName + ", " + seriesDescription + ", " + seriesPoster + ")");
+                    commandSeries.ExecuteNonQuery();
 
-                    //Season - Data
-                    foreach (var season in seasons)
+                    foreach (Season season in ((Series)item).GetSeasons())
                     {
-                        string seasonDescription = season.GetDescription();
-                        cnn.Execute("INSERT INTO Season (name, description, poster) values (" + seasonDescription + ")");
-                        List<Entry> episodes = season.GetEpisodes();
+                        SQLiteCommand commandSeason = new SQLiteCommand("INSERT INTO Season (series_id, description, poster) VALUES (@series, @description, @poster)", cnn);
+                        commandSeason.Parameters.AddWithValue("@series", ((Series)item).GetId());
+                        commandSeason.Parameters.AddWithValue("@description", season.GetDescription());
+                        commandSeason.Parameters.AddWithValue("@poster", season.GetPoster());
 
-                        //Episodes - Data
-                        foreach (var episode in episodes)
+                        commandSeason.ExecuteNonQuery();
+
+                        //Entry Tabelle -> ID bekommen vom letzten insert
+                        SQLiteCommand commandSeasonID = new SQLiteCommand("SELECT * FROM Season WHERE series_id = @series AND description = @desc", cnn);
+                        commandSeasonID.Parameters.AddWithValue("@series", ((Series)item).GetId());
+                        commandSeasonID.Parameters.AddWithValue("@desc", season.GetDescription());
+
+                        long seasonId = (long)commandSeasonID.ExecuteScalar();
+
+                        foreach (Entry episode in season.GetEpisodes())
                         {
-                            String episodeName = episode.Name;
-                            String episodeDescription = episode.Description;
-                            String episodePoster = episode.Poster;
-                            DateTime episodeRelease = episode.Release;
+                            SQLiteCommand commandEntry = new SQLiteCommand("INSERT INTO Entry (name, description, releaseYear, poster) VALUES (@name, @desc, @release, @poster)", cnn);
+                            commandEntry.Parameters.AddWithValue("@name", episode.Name);
+                            commandEntry.Parameters.AddWithValue("@desc", episode.Description);
+                            commandEntry.Parameters.AddWithValue("@release", episode.Release);
+                            commandEntry.Parameters.AddWithValue("@poster", episode.Poster);
 
-                            cnn.Execute("INSERT INTO Entry (name, description, poster) values (" + episodeName + episodeDescription + episodeDescription + episodePoster + ")");
+                            commandEntry.ExecuteNonQuery();
+
+                            //Entry Tabelle -> ID bekommen vom letzten insert
+                            SQLiteCommand commandID = new SQLiteCommand("SELECT * FROM Entry WHERE name = @name AND description = @desc", cnn);
+                            commandID.Parameters.AddWithValue("@name", episode.Name);
+                            commandID.Parameters.AddWithValue("@desc", episode.Description);
+
+                            long entryId = (long)commandID.ExecuteScalar();
+
+                            SQLiteCommand commandSeasonEntry = new SQLiteCommand("INSERT INTO Entry_Season (entry_id, season_id) VALUES (@entry, @season)", cnn);
+                            commandSeasonEntry.Parameters.AddWithValue("@entry", entryId);
+                            commandSeasonEntry.Parameters.AddWithValue("@season", seasonId);
+
+                            commandSeasonEntry.ExecuteNonQuery();
                         }
                     }
-
                 }
 
                 cnn.Close();
@@ -96,24 +118,99 @@ namespace DP_MediaManager.Database
 
         }
 
-        public List<LibraryItem.LibraryFactory> Search(String searchItem)
+        public List<LibraryFactory> Search(String searchItem)
         {
             return null;
         }
 
-        public void Remove(LibraryItem.LibraryFactory item)
+        public void Remove(LibraryFactory item)
         {
 
         }
 
-        public List<LibraryItem.LibraryFactory> GetAll()
+        public List<LibraryFactory> GetAll()
         {
-            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            List<LibraryFactory> lib = new List<LibraryFactory>();
+            using (SQLiteConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
-                var output = cnn.Query<Entry>("SELECT * FROM entry", new DynamicParameters());
-                //return output.ToList();
-                return null;
+                cnn.Open();
+
+                SQLiteCommand commandMovie = new SQLiteCommand("SELECT * FROM Movie", cnn);
+                SQLiteDataReader readerMovie = commandMovie.ExecuteReader();
+
+                while (readerMovie.Read())
+                {
+                    LibraryFactory movie = LibraryFactory.GetLibrary(LibraryType.Movie, readerMovie.GetInt32(2), readerMovie.GetString(1));
+                    SQLiteCommand commandEntry = new SQLiteCommand("SELECT * FROM Entry WHERE entry_id = @entryid", cnn);
+                    commandEntry.Parameters.AddWithValue("@entryid", readerMovie.GetInt32(0));
+                    SQLiteDataReader readerEntry = commandEntry.ExecuteReader();
+
+                    while (readerEntry.Read())
+                    {
+                        Entry entry = new Entry()
+                        {
+                            Name = readerEntry.GetString(1),
+                            Description = readerEntry.GetString(2),
+                            Release = readerEntry.GetDateTime(3),
+                            Poster = readerEntry.GetString(4)
+                        };
+
+                        ((Movie)movie).SetEntry(entry);
+                    }
+
+                    lib.Add(movie);
+                }
+
+                SQLiteCommand commandSeries = new SQLiteCommand("SELECT * FROM Series", cnn);
+                SQLiteDataReader readerSeries = commandSeries.ExecuteReader();
+
+                while (readerSeries.Read())
+                {
+                    LibraryFactory series = LibraryFactory.GetLibrary(LibraryType.Series, readerSeries.GetInt32(0), readerSeries.GetString(3));
+                    ((Series)series).Description = readerSeries.GetString(2);
+                    ((Series)series).Poster = readerSeries.GetString(4);
+                    ((Series)series).Name = readerSeries.GetString(1);
+
+                    SQLiteCommand commandSeason = new SQLiteCommand("SELECT * FROM Season WHERE series_id = @seriesid ORDER BY season_id ASC", cnn);
+                    commandSeason.Parameters.AddWithValue("@seriesid", readerSeries.GetInt32(0));
+                    SQLiteDataReader readerSeason = commandSeason.ExecuteReader();
+
+                    while (readerSeason.Read())
+                    {
+                        Season season = new Season(readerSeason.GetString(2), readerSeason.GetString(3));
+                        
+                        SQLiteCommand commandEntrySeason = new SQLiteCommand("SELECT * FROM Entry_Season WHERE season_id = @seasonid ORDER BY 'index' ASC", cnn);
+                        commandEntrySeason.Parameters.AddWithValue("@seasonid", readerSeason.GetInt32(0));
+                        SQLiteDataReader readerEntrySeason = commandEntrySeason.ExecuteReader();
+
+                        while (readerEntrySeason.Read())
+                        {
+                            SQLiteCommand commandEntry = new SQLiteCommand("SELECT * FROM Entry WHERE entry_id = @entryid", cnn);
+                            commandEntry.Parameters.AddWithValue("@entryid", readerEntrySeason.GetInt32(0));
+                            SQLiteDataReader readerEntry = commandEntry.ExecuteReader();
+
+                            while (readerEntry.Read())
+                            {
+                                Entry entry = new Entry()
+                                {
+                                    Name = readerEntry.GetString(1),
+                                    Description = readerEntry.GetString(2),
+                                    Release = readerEntry.GetDateTime(3),
+                                    Poster = readerEntry.GetString(4)
+                                };
+
+                                season.AddEpisode(entry);
+                            }
+                        }
+
+                        ((Series)series).AddSeason(season);
+                    }
+
+                    lib.Add(series);
+                }
             }
+
+            return lib;
         }
     }
 }
