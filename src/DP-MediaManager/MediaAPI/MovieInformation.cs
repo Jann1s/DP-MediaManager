@@ -25,7 +25,7 @@ namespace DP_MediaManager.MediaAPI
 
         public LibraryFactory GetEntryData()
         {
-            LibraryFactory movie = LibraryFactory.GetLibrary(LibraryType.Movie, id);
+            LibraryFactory movie = LibraryFactory.GetLibrary(LibraryType.Movie, id, info.GetMovieGenre());
             ((Movie)movie).SetEntry(new Entry {
                 Description = info.GetMovieDescription(),
                 Name = info.GetMovieName(),

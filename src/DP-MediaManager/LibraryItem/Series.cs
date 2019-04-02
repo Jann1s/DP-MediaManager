@@ -10,15 +10,17 @@ namespace DP_MediaManager.LibraryItem
     {
         private List<Season> seasons;
         private int id;
+        private string genre;
 
         public string Description { get; set; }
         public string Name { get; set; }
         public string Poster { get; set; }
 
-        public Series(int id)
+        public Series(int id, string genre)
         {
             seasons = new List<Season>();
             this.id = id;
+            this.genre = genre;
         }
 
         public void AddSeason(string description, string poster, float rating = -1f)
@@ -61,6 +63,11 @@ namespace DP_MediaManager.LibraryItem
         public override int GetId()
         {
             return id;
+        }
+
+        public override string GetGenre()
+        {
+            return genre;
         }
     }
 }

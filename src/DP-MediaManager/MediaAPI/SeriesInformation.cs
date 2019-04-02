@@ -21,7 +21,7 @@ namespace DP_MediaManager.MediaAPI
         public LibraryFactory GetEntryData()
         {
             List<LibraryFactory> data = new List<LibraryFactory>();
-            LibraryFactory series = LibraryFactory.GetLibrary(LibraryType.Series, id);
+            LibraryFactory series = LibraryFactory.GetLibrary(LibraryType.Series, id, info.GetTVGenre());
             ((Series)series).Name = info.GetTVName();
             ((Series)series).Description = info.GetTVDescription();
             ((Series)series).Poster = info.GetTVPoster();
