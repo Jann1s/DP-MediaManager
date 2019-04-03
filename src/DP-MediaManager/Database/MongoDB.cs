@@ -11,27 +11,27 @@ namespace DP_MediaManager.Database
     class MongoDB
     {
 
-        public void Insert(LibraryItem.LibraryFactory item)
+        public void Insert(LibraryFactory item)
         {
 
         }
 
-        public void Edit(LibraryItem.LibraryFactory item)
+        public void Edit(LibraryFactory item)
         {
 
         }
 
-        public List<LibraryItem.LibraryFactory> Find(String searchItem)
+        public List<LibraryFactory> Find(String searchItem)
         {
             return null;
         }
 
-        public void Delete(int id)
+        public void Delete(LibraryFactory item)
         {
             
         }
 
-        public List<Entry> ShowAll()
+        public List<LibraryFactory> ShowAll()
         {
             return null;
         }

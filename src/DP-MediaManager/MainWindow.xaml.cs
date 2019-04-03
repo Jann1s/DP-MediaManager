@@ -28,8 +28,6 @@ namespace DP_MediaManager
         //private Duration _duration = new Duration(TimeSpan.FromSeconds(1));
         //private double _oldHeight = 0;
 
-        private MediaManager manager;
-
         public MainWindow()
         {
             InitializeComponent();
