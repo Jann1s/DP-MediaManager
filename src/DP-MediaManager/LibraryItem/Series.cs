@@ -14,6 +14,8 @@ namespace DP_MediaManager.LibraryItem
 
         public string Description { get; set; }
         public string Name { get; set; }
+        public double Rating { get; set; }
+        public DateTime ReleaseDate { get; set; }
         public string Poster { get; set; }
 
         public Series(int id, string genre)

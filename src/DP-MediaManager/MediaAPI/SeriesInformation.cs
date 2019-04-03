@@ -24,8 +24,10 @@ namespace DP_MediaManager.MediaAPI
             LibraryFactory series = LibraryFactory.GetLibrary(LibraryType.Series, id, info.GetTVGenre());
             ((Series)series).Name = info.GetTVName();
             ((Series)series).Description = info.GetTVDescription();
+            ((Series)series).Rating = info.GetTVRating();
+            ((Series)series).ReleaseDate = info.GetTVReleaseDate();
             ((Series)series).Poster = info.GetTVPoster();
-
+            
             foreach (Season s in info.getTVSeasons())
             {
                 ((Series)series).AddSeason(s);
