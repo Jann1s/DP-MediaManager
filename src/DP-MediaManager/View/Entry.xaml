@@ -9,7 +9,7 @@
       Title="Entry">
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <Grid ScrollViewer.CanContentScroll="True">
+        <Grid x:Name="mainGrid" ScrollViewer.CanContentScroll="True">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="20px" />
                 <ColumnDefinition Width="1*" />
@@ -22,6 +22,8 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="20px" />
+                <RowDefinition Height="50px" />
+                <RowDefinition Height="50px" />
                 <RowDefinition Height="50px" />
                 <RowDefinition Height="50px" />
                 <RowDefinition Height="50px" />
@@ -56,7 +58,10 @@
             <Border Grid.Column="1" Grid.Row="8" Grid.ColumnSpan="6" Grid.RowSpan="5" BorderBrush="Black" BorderThickness="1px">
                 <TextBlock  x:Name="lbl_Description" Text="TEST TEST TEST" FontSize="16" Padding="5px" TextWrapping="Wrap" />
             </Border>
-            
+
+            <Label x:Name="lbl_Cast" Grid.Column="1" Grid.Row="14" Grid.ColumnSpan="6" Content="Cast" VerticalContentAlignment="Center" FontSize="20" FontWeight="Bold" Visibility="Hidden"/>
+            <Label x:Name="lbl_CastRole" Grid.Column="1" Grid.Row="15" Grid.ColumnSpan="3" Content="Role" VerticalContentAlignment="Center" FontSize="18" FontWeight="Bold" Visibility="Hidden"/>
+            <Label x:Name="lbl_CastName" Grid.Column="4" Grid.Row="15" Grid.ColumnSpan="3" Content="Name" VerticalContentAlignment="Center" FontSize="18" FontWeight="Bold" Visibility="Hidden"/>
         </Grid>
     </ScrollViewer>
 </Page>

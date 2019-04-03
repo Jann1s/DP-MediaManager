@@ -96,9 +96,9 @@ namespace DP_MediaManager.MediaAPI
             foreach (TMDbLib.Objects.Movies.Cast member in members)
             {
                 LibraryItem.Cast cast = new LibraryItem.Cast();
-                string[] fullName = member.Name.Split(' ');
-                cast.Firstname = fullName[0];
-                cast.Lastname = fullName[1];
+                //string[] fullName = member.Name.Split(' ');
+                cast.Firstname = member.Name;
+               // cast.Lastname = fullName[1];
                 cast.GeneralInformation = "https://www.themoviedb.org/person" + member.ProfilePath; 
                 cast.Role = member.Character; 
                 castList.Add(cast);
@@ -231,8 +231,8 @@ namespace DP_MediaManager.MediaAPI
                 LibraryItem.Cast cast = new LibraryItem.Cast();
 
                 string[] fullName = member.Name.Split(' ');
-                cast.Firstname = fullName[0];
-                cast.Lastname = fullName[1];
+                cast.Firstname = member.Name;
+                //cast.Lastname = fullName[1];
 
                 cast.GeneralInformation = "https://www.themoviedb.org/person" + member.ProfilePath;
 

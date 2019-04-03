@@ -69,6 +69,40 @@ namespace DP_MediaManager.View
 
             imageBox_poster.Source = bitmapImage;
             imageBox_poster.Stretch = stretch;
+
+            if (entry.Cast != null)
+            {
+                lbl_Cast.Visibility = Visibility.Visible;
+                lbl_CastName.Visibility = Visibility.Visible;
+                lbl_CastRole.Visibility = Visibility.Visible;
+
+                foreach (LibraryItem.Cast cast in entry.Cast)
+                {
+                    mainGrid.RowDefinitions.Add(new RowDefinition());
+                    mainGrid.RowDefinitions[mainGrid.RowDefinitions.Count - 1].Height = new GridLength(50, GridUnitType.Pixel);
+
+                    Label labelRole = new Label();
+                    labelRole.Content = cast.Role;
+                    labelRole.FontSize = 18;
+                    labelRole.FontStyle = FontStyles.Italic;
+
+                    Grid.SetColumn(labelRole, 1);
+                    Grid.SetRow(labelRole, mainGrid.RowDefinitions.Count - 1);
+                    Grid.SetColumnSpan(labelRole, 3);
+
+                    mainGrid.Children.Add(labelRole);
+
+                    Label labelName = new Label();
+                    labelName.Content = cast.Firstname;
+                    labelName.FontSize = 18;
+
+                    Grid.SetColumn(labelName, 4);
+                    Grid.SetRow(labelName, mainGrid.RowDefinitions.Count - 1);
+                    Grid.SetColumnSpan(labelName, 3);
+
+                    mainGrid.Children.Add(labelName);
+                }
+            }
         }
     }
 }
