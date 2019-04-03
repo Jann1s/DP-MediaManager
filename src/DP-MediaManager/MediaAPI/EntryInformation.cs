@@ -202,24 +202,7 @@ namespace DP_MediaManager.MediaAPI
                         TvEpisode tvEpisode = new TvEpisode();
                         tvEpisode = client.GetTvEpisodeAsync(entryId, i, e.EpisodeNumber,TvEpisodeMethods.Credits).Result;
 
-                        List<LibraryItem.Cast> castList = new List<LibraryItem.Cast>();
-
-                        List<TMDbLib.Objects.TvShows.Cast> members = tvEpisode.Credits.Cast;
-
-                        foreach(TMDbLib.Objects.TvShows.Cast member in members)
-                        {
-                            LibraryItem.Cast cast = new LibraryItem.Cast();
-
-                            string[] fullName = member.Name.Split(' ');
-                            cast.Firstname = fullName[0];
-                            cast.Lastname = fullName[1];
-
-                            cast.GeneralInformation = "https://www.themoviedb.org/person" + member.ProfilePath;
-
-                            cast.Role = member.Character;
-
-                            castList.Add(cast);
-                        }
+                        List<LibraryItem.Cast> castList = GetEpisodeCast(tvEpisode);
                         double rating = tvEpisode.VoteAverage;
                         string name = tvEpisode.Name;
                         DateTime release = tvEpisode.AirDate.Value;
@@ -235,6 +218,29 @@ namespace DP_MediaManager.MediaAPI
             }
             
             return seasons;
+        }
+        public List<LibraryItem.Cast> GetEpisodeCast(TvEpisode episode)
+        {
+
+            List<LibraryItem.Cast> castList = new List<LibraryItem.Cast>();
+
+            List<TMDbLib.Objects.TvShows.Cast> members = episode.Credits.Cast;
+
+            foreach (TMDbLib.Objects.TvShows.Cast member in members)
+            {
+                LibraryItem.Cast cast = new LibraryItem.Cast();
+
+                string[] fullName = member.Name.Split(' ');
+                cast.Firstname = fullName[0];
+                cast.Lastname = fullName[1];
+
+                cast.GeneralInformation = "https://www.themoviedb.org/person" + member.ProfilePath;
+
+                cast.Role = member.Character;
+
+                castList.Add(cast);
+            }
+            return castList;
         }
     }
 }
