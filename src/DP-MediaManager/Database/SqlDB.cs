@@ -54,6 +54,25 @@ namespace DP_MediaManager.Database
                     commandMovie.Parameters.AddWithValue("@genre", ((Movie)item).GetGenre());
 
                     commandMovie.ExecuteNonQuery();
+
+                    foreach(Cast cast in movie.Cast)
+                    {
+                        SQLiteCommand commandCast = new SQLiteCommand("INSERT INTO Cast(firstName, role) VALUES(@firstName, @role)", cnn);
+                        commandCast.Parameters.AddWithValue("@firstName", cast.Firstname);
+                        commandCast.Parameters.AddWithValue("@role", cast.Role);
+                        commandCast.ExecuteNonQuery();
+
+                        SQLiteCommand commandCastID = new SQLiteCommand("SELECT * FROM Cast WHERE firstName = @firstName AND role = @role", cnn);
+                        commandCastID.Parameters.AddWithValue("@firstName", cast.Firstname);
+                        commandCastID.Parameters.AddWithValue("@role", cast.Role);
+
+                        long castId = (long)commandCastID.ExecuteScalar();
+
+                        SQLiteCommand commandEntryCast = new SQLiteCommand("INSERT INTO Entry_Cast (entry_id, cast_id) VALUES (@entryid, @castid)", cnn);
+                        commandEntryCast.Parameters.AddWithValue("@entryid", entryId);
+                        commandEntryCast.Parameters.AddWithValue("@castid", castId);
+                        commandEntryCast.ExecuteNonQuery();
+                    }
                 }
                 //If Series
                 else if (item is Series)
@@ -105,6 +124,25 @@ namespace DP_MediaManager.Database
                             commandSeasonEntry.Parameters.AddWithValue("@season", seasonId);
 
                             commandSeasonEntry.ExecuteNonQuery();
+
+                            foreach (Cast cast in episode.Cast)
+                            {
+                                SQLiteCommand commandCast = new SQLiteCommand("INSERT INTO Cast(firstName, role) VALUES(@firstName, @role)", cnn);
+                                commandCast.Parameters.AddWithValue("@firstName", cast.Firstname);
+                                commandCast.Parameters.AddWithValue("@role", cast.Role);
+                                commandCast.ExecuteNonQuery();
+
+                                SQLiteCommand commandCastID = new SQLiteCommand("SELECT * FROM Cast WHERE firstName = @firstName AND role = @role", cnn);
+                                commandCastID.Parameters.AddWithValue("@firstName", cast.Firstname);
+                                commandCastID.Parameters.AddWithValue("@role", cast.Role);
+
+                                long castId = (long)commandCastID.ExecuteScalar();
+
+                                SQLiteCommand commandEntryCast = new SQLiteCommand("INSERT INTO Entry_Cast (entry_id, cast_id) VALUES (@entryid, @castid)", cnn);
+                                commandEntryCast.Parameters.AddWithValue("@entryid", entryId);
+                                commandEntryCast.Parameters.AddWithValue("@castid", castId);
+                                commandEntryCast.ExecuteNonQuery();
+                            }
                         }
                     }
                 }
@@ -134,6 +172,29 @@ namespace DP_MediaManager.Database
                 {
                     //Delete From Entry Table
                     Entry movie = ((Movie)item).GetMovie();
+
+                    SQLiteCommand commandID = new SQLiteCommand("SELECT * FROM Entry WHERE name = @name AND description = @desc", cnn);
+                    commandID.Parameters.AddWithValue("@name", movie.Name);
+                    commandID.Parameters.AddWithValue("@desc", movie.Description);
+
+                    long entryId = (long)commandID.ExecuteScalar();
+
+                    SQLiteCommand commandEntryCast = new SQLiteCommand("SELECT * FROM Entry_Cast WHERE entry_id = @entryid", cnn);
+                    commandEntryCast.Parameters.AddWithValue("@entryid", entryId);
+                    SQLiteDataReader readerEntryCast = commandEntryCast.ExecuteReader();
+
+                    while (readerEntryCast.Read())
+                    {
+                        int castId = readerEntryCast.GetInt32(1);
+
+                        SQLiteCommand commandDeleteCast = new SQLiteCommand("DELETE FROM Cast WHERE cast_id = @castid", cnn);
+                        commandDeleteCast.Parameters.AddWithValue("@castid", castId);
+                        commandDeleteCast.ExecuteNonQuery();
+                    }
+
+                    SQLiteCommand commandDeleteEntryCast = new SQLiteCommand("DELETE FROM Entry_Cast WHERE entry_id = @entryid", cnn);
+                    commandDeleteEntryCast.Parameters.AddWithValue("@entryid", entryId);
+                    commandDeleteEntryCast.ExecuteNonQuery();
 
                     SQLiteCommand commandEntry = new SQLiteCommand("DELETE FROM Entry WHERE name = @name AND description = @desc", cnn);
                     commandEntry.Parameters.AddWithValue("@name", movie.Name);
@@ -170,6 +231,24 @@ namespace DP_MediaManager.Database
                         while (readerEntry.Read())
                         {
                             int entryId = readerEntry.GetInt32(0);
+
+                            SQLiteCommand commandEntryCast = new SQLiteCommand("SELECT * FROM Entry_Cast WHERE entry_id = @entryid", cnn);
+                            commandEntryCast.Parameters.AddWithValue("@entryid", entryId);
+                            SQLiteDataReader readerEntryCast = commandEntryCast.ExecuteReader();
+
+                            while (readerEntryCast.Read())
+                            {
+                                int castId = readerEntryCast.GetInt32(1);
+
+                                SQLiteCommand commandDeleteCast = new SQLiteCommand("DELETE FROM Cast WHERE cast_id = @castid", cnn);
+                                commandDeleteCast.Parameters.AddWithValue("@castid", castId);
+                                commandDeleteCast.ExecuteNonQuery();
+                            }
+
+                            SQLiteCommand commandDeleteEntryCast = new SQLiteCommand("DELETE FROM Entry_Cast WHERE entry_id = @entryid", cnn);
+                            commandDeleteEntryCast.Parameters.AddWithValue("@entryid", entryId);
+                            commandDeleteEntryCast.ExecuteNonQuery();
+
                             //Delete Episodes
                             SQLiteCommand commandEntryDelete = new SQLiteCommand("DELETE FROM Entry WHERE entry_id = @entryid", cnn);
                             commandEntryDelete.Parameters.AddWithValue("@entryid", entryId);
@@ -209,9 +288,33 @@ namespace DP_MediaManager.Database
 
                 while (readerMovie.Read())
                 {
+                    int entryId = readerMovie.GetInt32(0);
+                    List<Cast> casts = new List<Cast>();
+
+                    SQLiteCommand commandEntryCast = new SQLiteCommand("SELECT * FROM Entry_Cast WHERE entry_id = @entryid", cnn);
+                    commandEntryCast.Parameters.AddWithValue("@entryid", entryId);
+                    SQLiteDataReader readerEntryCast = commandEntryCast.ExecuteReader();
+                    while (readerEntryCast.Read())
+                    {
+                        int castId = readerEntryCast.GetInt32(1);
+                        Cast cast = new Cast();
+
+                        SQLiteCommand commandCast = new SQLiteCommand("SELECT * FROM Cast WHERE cast_id = @castId", cnn);
+                        commandCast.Parameters.AddWithValue("@castId", castId);
+                        SQLiteDataReader readerCast = commandCast.ExecuteReader();
+
+                        while (readerCast.Read())
+                        {
+                            cast.Firstname = readerCast.GetString(1);
+                            cast.Role = readerCast.GetString(4);
+                        }
+
+                        casts.Add(cast);
+                    }
+
                     LibraryFactory movie = LibraryFactory.GetLibrary(LibraryType.Movie, readerMovie.GetInt32(2), readerMovie.GetString(1));
                     SQLiteCommand commandEntry = new SQLiteCommand("SELECT * FROM Entry WHERE entry_id = @entryid", cnn);
-                    commandEntry.Parameters.AddWithValue("@entryid", readerMovie.GetInt32(0));
+                    commandEntry.Parameters.AddWithValue("@entryid", entryId);
                     SQLiteDataReader readerEntry = commandEntry.ExecuteReader();
 
                     while (readerEntry.Read())
@@ -221,7 +324,8 @@ namespace DP_MediaManager.Database
                             Name = readerEntry.GetString(1),
                             Description = readerEntry.GetString(2),
                             Release = readerEntry.GetDateTime(3),
-                            Poster = readerEntry.GetString(4)
+                            Poster = readerEntry.GetString(4),
+                            Cast = casts
                         };
 
                         ((Movie)movie).SetEntry(entry);
@@ -254,8 +358,32 @@ namespace DP_MediaManager.Database
 
                         while (readerEntrySeason.Read())
                         {
+                            int entryId = readerEntrySeason.GetInt32(0);
+                            List<Cast> casts = new List<Cast>();
+
+                            SQLiteCommand commandEntryCast = new SQLiteCommand("SELECT * FROM Entry_Cast WHERE entry_id = @entryid", cnn);
+                            commandEntryCast.Parameters.AddWithValue("@entryid", entryId);
+                            SQLiteDataReader readerEntryCast = commandEntryCast.ExecuteReader();
+                            while (readerEntryCast.Read())
+                            {
+                                int castId = readerEntryCast.GetInt32(1);
+                                Cast cast = new Cast();
+
+                                SQLiteCommand commandCast = new SQLiteCommand("SELECT * FROM Cast WHERE cast_id = @castId", cnn);
+                                commandCast.Parameters.AddWithValue("@castId", castId);
+                                SQLiteDataReader readerCast = commandCast.ExecuteReader();
+
+                                while (readerCast.Read())
+                                {
+                                    cast.Firstname = readerCast.GetString(1);
+                                    cast.Role = readerCast.GetString(4);
+                                }
+
+                                casts.Add(cast);
+                            }
+
                             SQLiteCommand commandEntry = new SQLiteCommand("SELECT * FROM Entry WHERE entry_id = @entryid", cnn);
-                            commandEntry.Parameters.AddWithValue("@entryid", readerEntrySeason.GetInt32(0));
+                            commandEntry.Parameters.AddWithValue("@entryid", entryId);
                             SQLiteDataReader readerEntry = commandEntry.ExecuteReader();
 
                             while (readerEntry.Read())
@@ -265,7 +393,8 @@ namespace DP_MediaManager.Database
                                     Name = readerEntry.GetString(1),
                                     Description = readerEntry.GetString(2),
                                     Release = readerEntry.GetDateTime(3),
-                                    Poster = readerEntry.GetString(4)
+                                    Poster = readerEntry.GetString(4),
+                                    Cast = casts
                                 };
 
                                 season.AddEpisode(entry);

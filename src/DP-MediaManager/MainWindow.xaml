@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DP_MediaManager"
         mc:Ignorable="d"
-        Title="Collection" Height="600" Width="1000" Background="#FF4F4F4F" Foreground="#FFE4E4E4" MinWidth="1000" MinHeight="600" WindowStartupLocation="CenterScreen">
+        Title="Collection" Height="600" Width="1000" Background="#FF838282" Foreground="#FFE4E4E4" MinWidth="1000" MinHeight="600" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*" MinHeight="35px" MaxHeight="50px" />
