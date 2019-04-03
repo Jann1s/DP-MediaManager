@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DP_MediaManager.LibraryItem
 {
-    class Series : LibraryFactory, ISeries
+    class Series : LibraryFactory
     {
         private List<Season> seasons;
         private int id;
@@ -25,10 +25,9 @@ namespace DP_MediaManager.LibraryItem
             this.genre = genre;
         }
 
-        public void AddSeason(string description, string poster, float rating = -1f)
+        public void AddSeason(string description, string poster, double rating = -1f)
         {
             seasons.Add(new Season(description, poster, rating));
-
         }
 
         public void AddSeason(Season season)

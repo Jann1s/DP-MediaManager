@@ -125,8 +125,6 @@
     <Compile Include="LibraryItem\Cast.cs" />
     <Compile Include="LibraryItem\Entry.cs" />
     <Compile Include="LibraryItem\LibraryFactory.cs" />
-    <Compile Include="LibraryItem\IMovie.cs" />
-    <Compile Include="LibraryItem\ISeries.cs" />
     <Compile Include="LibraryItem\Movie.cs" />
     <Compile Include="LibraryItem\Season.cs" />
     <Compile Include="LibraryItem\Series.cs" />

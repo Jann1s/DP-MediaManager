@@ -9,11 +9,11 @@ namespace DP_MediaManager.LibraryItem
     public class Season
     {
         private string description;
-        private float rating;
+        private double rating;
         private string poster;
         private List<Entry> episodes;
 
-        public Season(string description, string poster, float rating = -1f)
+        public Season(string description, string poster, double rating = -1)
         {
             episodes = new List<Entry>();
 
@@ -42,7 +42,7 @@ namespace DP_MediaManager.LibraryItem
             return description;
         }
 
-        public float GetRating()
+        public double GetRating()
         {
             return rating;
         }

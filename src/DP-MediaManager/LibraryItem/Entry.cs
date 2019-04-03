@@ -10,7 +10,6 @@ namespace DP_MediaManager.LibraryItem
     {
         public string Name { get; set; }
         public DateTime Release { get; set; }
-        public string FileLocation { get; set; }
         public string Description { get; set; }
         public List<Cast> Cast { get; set; }
         public string Poster { get; set; }

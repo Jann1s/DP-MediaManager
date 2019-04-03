@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DP_MediaManager.LibraryItem
 {
-    class Movie : LibraryFactory, IMovie
+    class Movie : LibraryFactory
     {
         private Entry entry;
         private int id;
