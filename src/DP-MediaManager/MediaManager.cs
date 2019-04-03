@@ -102,7 +102,9 @@ namespace DP_MediaManager
 
         public void DeleteItem(int id)
         {
+            LibraryFactory item = libItems.FindAll(x => x.GetId() == id)[0];
             libItems.RemoveAll(x => x.GetId() == id);
+            database.Remove(item);
         }
 
         public string GetPosterName(string fileName)
