@@ -13,7 +13,7 @@ namespace DP_MediaManager.Database
 {
     class SqlDB : IDatabase
     {
-        public string LoadConnectionString(String id = "Default")
+        private string LoadConnectionString(String id = "Default")
         {
             string fixedConnectionString = ConfigurationManager.ConnectionStrings[id].ConnectionString.Replace("{AppDir}", AppDomain.CurrentDomain.BaseDirectory);
 

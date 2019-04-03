@@ -15,7 +15,7 @@ namespace DP_MediaManager.Database
     {
         private MongoDB Mongo;
 
-        public string LoadConnectionString(String id = "Default")
+        private string LoadConnectionString(String id = "Default")
         {
             return ConfigurationManager.ConnectionStrings[id].ConnectionString;
         }
