@@ -31,7 +31,9 @@ namespace DP_MediaManager.MediaAPI
                 Name = info.GetMovieName(),
                 Release = info.GetMovieReleaseDate(),
                 Poster = info.GetMoviePoster(),
-                Cast = info.GetMovieCast() });
+                Cast = info.GetMovieCast(),
+                Rating = info.GetMovieRating()});
+            
 
             return movie;
         }

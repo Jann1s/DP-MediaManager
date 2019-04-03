@@ -14,5 +14,6 @@ namespace DP_MediaManager.LibraryItem
         public string Description { get; set; }
         public List<Cast> Cast { get; set; }
         public string Poster { get; set; }
+        public double Rating { get; set; }
     }
 }

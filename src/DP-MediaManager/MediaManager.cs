@@ -78,7 +78,8 @@ namespace DP_MediaManager
 
 
             database = new Database.SqlDB();
-            libItems = database.GetAll();
+            //libItems = database.GetAll();
+            libItems = new List<LibraryFactory>();
 
             //Try to download the Poster
             CachePoster();
@@ -96,7 +97,7 @@ namespace DP_MediaManager
 
         public void AddItem(LibraryFactory item)
         {
-            database.Add(item);
+            //database.Add(item);
             libItems.Add(item);
         }
 
