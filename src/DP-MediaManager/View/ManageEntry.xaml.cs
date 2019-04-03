@@ -53,6 +53,7 @@ namespace DP_MediaManager.View
             int id = getId(textBox_iD.Text);
             MediaManager.Instance.DeleteItem(id);
 
+            MediaManager.Instance.Notify();
             this.Close();
         }
 

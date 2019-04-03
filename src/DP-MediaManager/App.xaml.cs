@@ -20,7 +20,7 @@ namespace DP_MediaManager
 
         private void App_Exit(object sender, ExitEventArgs e)
         {
-            Environment.Exit(0);
+            //Environment.Exit(0);
         }
     }
 }

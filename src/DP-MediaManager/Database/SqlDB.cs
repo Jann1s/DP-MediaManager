@@ -125,7 +125,76 @@ namespace DP_MediaManager.Database
 
         public void Remove(LibraryFactory item)
         {
+            using (SQLiteConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            {
+                cnn.Open();
 
+                //If Movie
+                if (item is Movie)
+                {
+                    //Delete From Entry Table
+                    Entry movie = ((Movie)item).GetMovie();
+
+                    SQLiteCommand commandEntry = new SQLiteCommand("DELETE FROM Entry WHERE name = @name AND description = @desc", cnn);
+                    commandEntry.Parameters.AddWithValue("@name", movie.Name);
+                    commandEntry.Parameters.AddWithValue("@desc", movie.Description);
+
+                    commandEntry.ExecuteNonQuery();
+
+                    //Delete from Movie Table
+                    SQLiteCommand commandMovie = new SQLiteCommand("DELETE FROM Movie WHERE movie_id = @movieId", cnn);
+                    commandMovie.Parameters.AddWithValue("@movieId", ((Movie)item).GetId());
+
+                    commandMovie.ExecuteNonQuery();
+                }
+                //If Series
+                else if (item is Series)
+                {
+                    //Get Series id
+                    int seriesId = item.GetId();
+
+                    //Get Season id
+                    SQLiteCommand commandSeason = new SQLiteCommand("SELECT * FROM Season WHERE series_id = @seriesid", cnn);
+                    commandSeason.Parameters.AddWithValue("@seriesid", seriesId);
+                    SQLiteDataReader readerSeason = commandSeason.ExecuteReader();
+
+                    while (readerSeason.Read())
+                    {
+                        int seasonId = readerSeason.GetInt32(0);
+
+                        //Get Entry Id
+                        SQLiteCommand commandEntrySeason = new SQLiteCommand("SELECT * FROM Entry_Season WHERE season_id = @seasonid", cnn);
+                        commandEntrySeason.Parameters.AddWithValue("@seasonid", seasonId);
+                        SQLiteDataReader readerEntry = commandEntrySeason.ExecuteReader();
+
+                        while (readerEntry.Read())
+                        {
+                            int entryId = readerEntry.GetInt32(0);
+                            //Delete Episodes
+                            SQLiteCommand commandEntryDelete = new SQLiteCommand("DELETE FROM Entry WHERE entry_id = @entryid", cnn);
+                            commandEntryDelete.Parameters.AddWithValue("@entryid", entryId);
+                            commandEntryDelete.ExecuteNonQuery();
+
+                            //Delete Entry_Season
+                            SQLiteCommand commandEntrySeasonDelete = new SQLiteCommand("DELETE FROM Entry_Season WHERE entry_id = @entryid", cnn);
+                            commandEntrySeasonDelete.Parameters.AddWithValue("@entryid", entryId);
+                            commandEntrySeasonDelete.ExecuteNonQuery();
+                        }
+                    }
+
+                    //Delete Seasons
+                    SQLiteCommand commandSeasonDelete = new SQLiteCommand("DELETE FROM Season WHERE series_id = @series", cnn);
+                    commandSeasonDelete.Parameters.AddWithValue("@series", seriesId);
+                    commandSeasonDelete.ExecuteNonQuery();
+
+                    //Delete Series
+                    SQLiteCommand commandSeriesDelete = new SQLiteCommand("DELETE FROM Series WHERE series_id = @seriesid", cnn);
+                    commandSeriesDelete.Parameters.AddWithValue("@seriesid", seriesId);
+                    commandSeriesDelete.ExecuteNonQuery();
+                }
+
+                cnn.Close();
+            }
         }
 
         public List<LibraryFactory> GetAll()
